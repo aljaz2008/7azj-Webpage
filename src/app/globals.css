@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: #222222;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #000000;
+  color: #ffffff;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+main {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+::selection {
+  background: #ffffff;
+  color: #000000;
+}
+
+.mdx-content h2,
+.mdx-content h3,
+.mdx-content h4 {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+.mdx-content pre {
+  overflow-x: auto;
+  border: 1px solid #222222;
+  border-radius: 0.75rem;
+  background: #090909;
+  padding: 1rem;
+}
+
+.mdx-content code {
+  font-family: var(--font-jetbrains-mono), monospace;
+  color: #d1d5db;
+}
+
+
+@media (max-width: 767px) {
+  main {
+    scroll-padding-top: 4.5rem;
+  }
+
+  .mdx-content pre {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
