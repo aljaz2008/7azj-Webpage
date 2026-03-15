@@ -1,0 +1,34 @@
+## Overview
+
+The **ESP32 Antenna Switch** project allows me to remotely route transceivers to multiple antennas while keeping SWR and relay status visible in real time.
+
+![Antenna switch diagram](/images/antenna-diagram.svg)
+
+## Hardware Stack
+
+- ESP32-WROOM controller
+- 8x RF relay bank with interlock logic
+- Isolated PSU and surge protection
+- VSWR bridge for telemetry
+
+## Firmware Notes
+
+```cpp
+void selectAntenna(uint8_t index) {
+  disableAllRelays();
+  digitalWrite(relayPins[index], HIGH);
+  publishStatus(index);
+}
+```
+
+## Signal Flow Diagram
+
+```text
+[Transceiver] -> [RF Relay Matrix] -> [Band-Specific Antennas]
+                         |
+                     [ESP32 API]
+```
+
+## Outcome
+
+The system reduced manual switching errors and made station operation much faster during contest pileups.
