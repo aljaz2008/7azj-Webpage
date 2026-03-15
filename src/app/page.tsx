@@ -33,7 +33,7 @@ export default function HomePage() {
             <div className="space-y-5 text-secondary">
               <h2 className="font-heading text-4xl text-primary">About Me</h2>
 
-              <p>Hello! My name is Aljaž Žugič Jehart, callsign S57AZJ.</p>
+              <p>Hello! My name is Aljaž Žugič Jehart, callsign TEST.</p>
 
               <p>
                 I am a young amateur radio operator from Ljubljana, Slovenia. I received my amateur
