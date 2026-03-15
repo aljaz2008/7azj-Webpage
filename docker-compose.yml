@@ -1,26 +1,32 @@
-version: "3.9"
-
 services:
 
   s57azj-site:
     image: ghcr.io/aljaz2008/7azj-webpage:latest
-    container_name: s57azj-site
+    container_name: s57azj
     restart: unless-stopped
+
     networks:
-      - npm
+      - nginxproxy_default
+
     labels:
-      - "com.centurylinklabs.watchtower.enable=true"
+      - com.centurylinklabs.watchtower.enable=true
+
+    environment:
+      - NODE_ENV=production
 
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
     restart: unless-stopped
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 60 --cleanup --label-enable
+
+    command: --interval 60 --cleanup --rolling-restart --label-enable
+
     networks:
-      - npm
+      - nginxproxy_default
 
 networks:
-  npm:
+  nginxproxy_default:
     external: true

@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar'
 import ParticleBackground from '@/components/ParticleBackground'
 import ProjectsGrid from '@/components/ProjectsGrid'
 import Section from '@/components/Section'
+import { Mail, Linkedin, MessageCircle } from "lucide-react"
 
 const Globe = dynamicImport(() => import('@/components/Globe'), {
   ssr: false
@@ -33,7 +34,7 @@ export default function HomePage() {
             <div className="space-y-5 text-secondary">
               <h2 className="font-heading text-4xl text-primary">About Me</h2>
 
-              <p>Hello! My name is Aljaž Žugič Jehart, callsign TEST.</p>
+              <p>Hello! My name is Aljaž Žugič Jehart, callsign S57AZJ.</p>
 
               <p>
                 I am a young amateur radio operator from Ljubljana, Slovenia. I received my amateur
@@ -152,7 +153,7 @@ export default function HomePage() {
 
             <div className="relative min-h-[360px] overflow-hidden rounded-2xl border border-border">
               <Image
-                src="/images/station-setup.svg"
+                src="/images/SHACK.jpg"
                 alt="Station setup"
                 fill
                 className="object-cover"
@@ -176,16 +177,48 @@ export default function HomePage() {
 
         <Section id="contact" title="Contact">
           <div className="max-w-3xl space-y-4">
+
             <h2 className="font-heading text-4xl text-primary">Contact</h2>
 
             <p className="text-secondary">Callsign: S57AZJ</p>
             <p className="text-secondary">Locator: JN76GB</p>
             <p className="text-secondary">Location: Ljubljana, Slovenia</p>
 
-            <p className="pt-3 text-sm text-secondary">
-              Always open to technical collaboration, contest team discussions and radio-software
-              experiments.
+            <div className="flex flex-wrap gap-6 pt-6">
+
+              <a
+                href="mailto:s57azj@s57azj.eu"
+                className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 hover:bg-card/70 transition"
+              >
+                <Mail size={18}/>
+                Email
+              </a>
+
+              <a
+                href="https://linkedin.com/in/aljaž-žugič-jehart-9a5a66239"
+                target="_blank"
+                className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 hover:bg-card/70 transition"
+              >
+                <Linkedin size={18}/>
+                LinkedIn
+              </a>
+
+              <a
+                href="https://discord.com/users/770928106101145621"
+                target="_blank"
+                className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 hover:bg-card/70 transition"
+              >
+                <MessageCircle size={18}/>
+                Discord
+              </a>
+
+            </div>
+
+            <p className="pt-4 text-sm text-secondary">
+              Always open to technical collaboration, contest team discussions and
+              radio-software experiments.
             </p>
+
           </div>
         </Section>
       </main>

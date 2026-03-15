@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620">
-  <rect width="1100" height="620" fill="#070707"/>
-  <rect x="70" y="100" width="960" height="420" rx="20" fill="#111" stroke="#333"/>
-  <text x="120" y="180" fill="#fff" font-size="38" font-family="monospace">STATION SETUP</text>
-  <rect x="120" y="230" width="330" height="220" fill="#0b0b0b" stroke="#333"/>
-  <rect x="490" y="230" width="220" height="220" fill="#0b0b0b" stroke="#333"/>
-  <rect x="750" y="230" width="220" height="220" fill="#0b0b0b" stroke="#333"/>
-</svg>

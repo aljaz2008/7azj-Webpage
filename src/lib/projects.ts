@@ -1,4 +1,4 @@
-import AntennaSwitchArticle from '@/content/projects/antenna-switch.mdx';
+import AntennaSwitchArticle from '@/content/projects/contest-analyzer.mdx';
 
 export type ProjectItem = {
   id: string;
@@ -11,12 +11,12 @@ export type ProjectItem = {
 
 export const projects: ProjectItem[] = [
   {
-    id: 'esp32-antenna-switch',
-    title: 'ESP32 Antenna Switch',
+    id: 'Contest analysis tool',
+    title: 'contest analysis tool',
     summary:
-      'A remote-controlled antenna switch with web dashboard, RF-safe relays and telemetry logging.',
-    tags: ['ESP32', 'RF', 'Automation'],
-    image: '/images/antenna-switch.svg',
+      'A tool written in python that parses contest logs and generates detailed analysis of the station performance, including QSO breakdowns, score calculations, and performance metrics.',
+    tags: ['Python', 'Contest', 'Automation'],
+    image: '/images/Contest-analyzer.png',
     Article: AntennaSwitchArticle
   }
 ];

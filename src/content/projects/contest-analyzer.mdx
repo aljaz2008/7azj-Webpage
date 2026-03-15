@@ -1,0 +1,98 @@
+# Contest Log Analyzer
+
+## Overview
+
+I am currently developing a **contest log analysis tool** that processes amateur radio contest logs and generates useful statistics and visual summaries.
+
+The goal of the project is to make it easier to review contest performance and quickly understand how a contest went after it finishes.
+
+The tool reads standard contest log files and produces a report containing information such as QSO distribution, operator activity, and hourly performance.
+
+---
+
+## Motivation
+
+After participating in several contests, I noticed that reviewing a log manually can take a long time and often makes it difficult to identify patterns such as:
+
+* which hours were the most productive
+* which operator handled the most QSOs
+* when activity increased or dropped
+* overall contest pacing
+
+This project aims to automate that analysis and present the results in a clear format.
+
+---
+
+## Current Features
+
+At the moment the analyzer is able to:
+
+* parse contest log files
+* extract general contest information
+* calculate QSO counts per hour
+* generate graphs showing activity over time
+* produce simple HTML reports
+
+The output is intended to provide a quick overview of the contest without needing to manually inspect the log file.
+
+---
+
+## Technologies Used
+
+The project is written in **Python** and uses several libraries for data processing and visualization.
+
+Main components include:
+
+* **Python** for the core logic
+* **Matplotlib** for graphs
+* **HTML generation** for report output
+* custom log parsing logic
+
+This allows the tool to take a raw log file and turn it into a readable report.
+
+---
+
+## Example Workflow
+
+The basic workflow of the tool is:
+
+```text
+Contest Log File
+        ↓
+Log Parsing
+        ↓
+Data Analysis
+        ↓
+Graph Generation
+        ↓
+HTML Report
+```
+
+The final report contains both statistics and visualizations that help interpret the results.
+
+---
+
+## Current Development
+
+The project is still being developed and new features are being added gradually.
+
+At the moment I am experimenting with:
+
+* additional statistical analysis
+* more detailed visualizations
+* improvements to the report layout
+
+The goal is to make the reports easier to read and more useful for understanding contest performance.
+
+---
+
+## Possible Future Features
+
+Some ideas for future development include:
+
+* operator-specific statistics
+* band and mode analysis
+* automatic comparison between contests
+* improved visual dashboards
+
+As the project evolves, the analyzer will likely become a more useful tool for reviewing contest logs and identifying areas for improvement.
