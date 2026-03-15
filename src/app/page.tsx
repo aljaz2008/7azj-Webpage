@@ -153,7 +153,7 @@ export default function HomePage() {
 
             <div className="relative min-h-[360px] overflow-hidden rounded-2xl border border-border">
               <Image
-                src="/images/SHACK.jpg"
+                src="/images/shack.jpg"
                 alt="Station setup"
                 fill
                 className="object-cover"
