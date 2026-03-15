@@ -37,7 +37,6 @@ function GlobeMesh() {
   const globe = useMemo(() => {
     const instance = new (ThreeGlobe as any)({ waitForGlobeReady: true })
       .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
-      .backgroundColor('#000000')
       .arcsData(qsoArcs)
       .arcColor('color')
       .arcStroke(0.8)
