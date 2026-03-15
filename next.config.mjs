@@ -6,9 +6,17 @@ const withMDX = createMDX({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: '**' }]
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**'
+      }
+    ]
   }
 };
 
