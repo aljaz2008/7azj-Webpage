@@ -144,7 +144,7 @@ export default function HomePage() {
                 <div className="rounded-2xl border border-border bg-card p-5">
                   <h3 className="font-heading text-xl">Antennas</h3>
                   <ul className="mt-2 space-y-1 text-sm text-secondary">
-                    <li>Optibeam 16/3</li>
+                    <li>2x Optibeam 16/3</li>
                     <li>7 MHz Moxon</li>
                     <li>Rotary dipole</li>
                     <li>80m dipole</li>
