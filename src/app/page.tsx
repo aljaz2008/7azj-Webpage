@@ -15,9 +15,9 @@ const Globe = dynamicImport(() => import('@/components/Globe'), {
 })
 
 const contestData = [
-  { name: 'WAEDC RTTY', qsos: '738', score: '538,938', club: 'Slovenia Contest Club' },
-  { name: 'CQ WW SSB', qsos: '412', score: '221,480', club: 'S57 Local Team' },
-  { name: 'IARU HF', qsos: '365', score: '189,210', club: 'Slovenia Contest Club' }
+  { name: 'WAEDC RTTY', qsos: '919', score: '1,242,919', club: 'Slovenia Contest Club', date: '8.11-9.11.2025', category: "SOHP", callsign:"S51A", ops: "S57AZJ" },
+  { name: 'BARTG RTTY SPRINT', qsos: '756', score: '223,020', club: 'Slovenia Contest Club', date:"24.1-25.1.2026", category: "M/M HP", callsign:"S51A", ops: "S50NB, S57AZJ, S51MG" },
+  { name: 'CQ WW RTTY WPX', qsos: '1900', score: '4,829,244', club: 'Slovenia Contest Club', date: "14.2-15.2.2026", category: "M/S LP", callsign:"S51A", ops:"S55O, S51MG, S55BG, S50NB, S57AZJ, S50V" }
 ]
 
 export default function HomePage() {
@@ -104,8 +104,12 @@ export default function HomePage() {
                 >
                   <h3 className="font-heading text-2xl text-primary">{entry.name}</h3>
                   <p className="mt-3 text-sm text-secondary">QSOs: {entry.qsos}</p>
+                  <p className="text-sm text-secondary">callsign: {entry.callsign}</p>
+                  <p className="text-sm text-secondary">category: {entry.category}</p>
                   <p className="text-sm text-secondary">Score: {entry.score}</p>
                   <p className="text-sm text-secondary">Club: {entry.club}</p>
+                  <p className="text-sm text-secondary">Date: {entry.date}</p>
+                  <p className="text-sm text-secondary">Operator(s): {entry.ops}</p>
                 </article>
               ))}
             </div>
