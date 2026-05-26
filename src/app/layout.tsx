@@ -15,7 +15,10 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'S57AZJ | Amateur Radio Operator',
   description:
-    'Personal website of Aljaž Žugič Jehart (S57AZJ), featuring RF experiments, contesting and station projects.'
+    'Personal website of Aljaž Žugič Jehart (S57AZJ), featuring RF experiments, contesting and station projects.',
+  icons: {
+    icon: 'public/favicon.png'
+  }
 };
 
 export default function RootLayout({
