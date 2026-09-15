@@ -15,6 +15,8 @@ const Globe = dynamicImport(() => import('@/components/Globe'), {
 })
 
 const contestData = [
+  { name: 'R1 FIELD DAY', qsos: '301', score: '?', club: 'Vezist', date: '5.9-6.9.2026', category: "M/S LP", callsign:"S510ARMY/P", ops: "S50V, S559NV, S56WKZ, S57AZJ, S57DD, S57GG" },
+  { name: 'WW DIGI', qsos: '?', score: '90,158', club: 'Vezist', date: '29.8-30.8.2026', category: "M/S LP", callsign:"S59TIM", ops: "S50NI, S50V, S559NV, S56WKZ, S57AZJ, S57DD, S57GG" },
   { name: 'WAEDC RTTY', qsos: '919', score: '1,242,919', club: 'Slovenia Contest Club', date: '8.11-9.11.2025', category: "SOHP", callsign:"S51A", ops: "S57AZJ" },
   { name: 'BARTG RTTY SPRINT', qsos: '756', score: '223,020', club: 'Slovenia Contest Club', date:"24.1-25.1.2026", category: "M/M HP", callsign:"S51A", ops: "S50NB, S57AZJ, S51MG" },
   { name: 'CQ WW RTTY WPX', qsos: '1900', score: '4,829,244', club: 'Slovenia Contest Club', date: "14.2-15.2.2026", category: "M/S LP", callsign:"S51A", ops:"S55O, S51MG, S55BG, S50NB, S57AZJ, S50V" }
