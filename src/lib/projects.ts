@@ -1,4 +1,5 @@
 import AntennaSwitchArticle from '@/content/projects/contest-analyzer.mdx';
+import ArmyInTheFieldArticle from '@/content/projects/fielddayinwwdigizvojsko.mdx';
 
 export type ProjectItem = {
   id: string;
@@ -10,6 +11,15 @@ export type ProjectItem = {
 };
 
 export const projects: ProjectItem[] = [
+  {
+    id: 'Setup for the WWDIGI and FIELD DAY contests',
+    title: 'Setup for the WWDIGI and FIELD DAY contests & contest report',
+    summary:
+      'A quick rundown of the setup used for the WWDIGI and FIELD DAY contests, including a detailed report of the contest performance and analysis of the station setup and its future improvements.',
+    tags: ['Equipement', 'Station setup', 'Contest'],
+    image: '/images/vojska.jpeg',
+    Article: ArmyInTheFieldArticle
+  },
   {
     id: 'Contest analysis tool',
     title: 'contest analysis tool',
