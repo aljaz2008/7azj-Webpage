@@ -13,9 +13,9 @@ export type ProjectItem = {
 export const projects: ProjectItem[] = [
   {
     id: 'Setup for the WWDIGI and FIELD DAY contests',
-    title: 'Setup for the WWDIGI and FIELD DAY contests & contest report',
+    title: 'WW Digi & IARU Region 1 Field Day 2026 with the Slovenian Army',
     summary:
-      'A quick rundown of the setup used for the WWDIGI and FIELD DAY contests, including a detailed report of the contest performance and analysis of the station setup and its future improvements.',
+      'Two contests, one field setup: operating S59TIM and S510ARMY together with the Slovenian Army signals community — what worked, what didn\'t, and what we change next year.',
     tags: ['Equipement', 'Station setup', 'Contest'],
     image: '/images/vojska.jpeg',
     Article: ArmyInTheFieldArticle

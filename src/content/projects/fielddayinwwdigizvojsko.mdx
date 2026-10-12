@@ -1,1 +1,123 @@
-# NOT YET HERE HAHAHA
+This late summer brought two back-to-back weekends in the field: the **World Wide Digi DX Contest** (29–30 August 2026) and the **IARU Region 1 Field Day SSB** (5–6 September 2026). Both were operated by **Radioklub Vezist** in cooperation with the **72nd Brigade of the Slovenian Army in Maribor** — more about the club and the people behind it can be found on [their website](https://www.s50vzz.si).
+
+We were on the air under two callsigns: the club call **S59TIM** and the special event call **S510ARMY**.
+
+## The contests in a nutshell
+
+**WW Digi** is organised by the World Wide Radio Operators Foundation (WWROF) together with the Slovenia Contest Club. It runs for 24 hours (12:00–11:59 UTC) on 160, 80, 40, 20, 15 and 10 m, using **FT4 and FT8 only**. The exchange is just the 4-character grid square; QSO points are distance-based (1 point + 1 per 3000 km), and the multipliers are 2-character grid fields per band.
+
+**IARU Region 1 Field Day** is the classic portable contest: the SSB leg runs on the first full weekend of September from Saturday 13:00 to Sunday 12:59 UTC. The whole point is to operate with portable equipment, portable antennas and power independent of the mains — which makes it a natural fit for a military communications setup.
+
+
+
+## Station and antennas
+
+The antenna setup was identical for both weekends:
+
+- **Sigma all-band vertical** — the "does everything" antenna, used on all bands.
+- **Hexbeam for 20–10 m** — at 15 m height, on the mast of the army communications van.
+- **Dipole for 80/40 m** — fed in the middle, inverted-V style.
+
+The transceiver was an **Icom IC-7300MK2**, which turned out to be the single biggest factor in how both weekends went (more on that below).
+
+
+
+
+Getting the hexbeam up to 15 m on the van's mast made a real difference on the high bands. Still, in hindsight a **Spiderbeam** would have been the better choice for both contests. The hexbeam is compact and easy to deploy, but a full-size Spiderbeam yagi on 20/15/10 m offers more gain and better front-to-back ratio, which counts for a lot in a contest, when you're trying to pull weak stations out of a crowded band.
+
+## WW Digi — S59TIM / S510ARMY
+
+We entered as a **multi-operator, single-transmitter** station. WW Digi has no separate portable category, so we were competing against fixed multi-op stations.
+
+### The callsign problem
+
+We started the contest as S510ARMY — and that cost us the first few hours. The submitted logs show it clearly. The issue is fundamental to FT8: the standard message format has a fixed-size field for "standard" callsigns, and an 8-character special call like S510ARMY doesn't fit. WSJT-X falls back to hashed callsigns and alternative message types, which works for a casual QSO, but in a contest it slows every exchange down, confuses the other side's software and costs QSOs. After a few hours we gave up and switched to **S59TIM** — a short, standard callsign is simply a requirement for a serious FT8 contest effort.
+
+**Lesson #1:** long special-event calls and FT8 contests don't mix. Keep the special call for SSB/CW and use a short call for digital.
+
+
+
+### One radio isn't enough for multi-op
+
+The bigger limitation was structural: we had **only one station**. In the multi-single category only one signal may be on the air at any moment, but that doesn't mean you can only have one radio. The rules explicitly allow a second, **inband** station on the same band, as long as:
+
+- a **hardware interlock** makes sure the two stations never transmit at the same time,
+- only the run station calls CQ — the inband station may only **call other stations** (search & pounce),
+- the inband station **changes frequency after each QSO**.
+
+In practice this means the run station keeps CQing while the inband operator uses the gaps to work stations that never answer a CQ — the ones calling CQ themselves elsewhere in the sub-band. With FT8's fixed 15-second periods and a good interlock, that adds a significant number of QSOs per hour on the same band, without breaking the one-signal rule. With a single radio, all of those QSOs were simply lost.
+
+### What we're changing next year
+
+The plan for WW Digi 2027 (28–29 August) is a proper two-radio setup — run plus interlocked inband — and dedicated **receive antennas**. On FT8 the rate is limited by what you can decode, not by how loud you are. Better receive on the low bands translates directly into more decodes, more answered CQs and a higher rate.
+
+
+
+## IARU Region 1 Field Day — the fun one
+
+Field Day was much more relaxed. The goal was less about the score and more about the experience, and we genuinely had a great time — setting up the station in the field with the army crew, operating SSB in shifts and showing what amateur radio can do with portable equipment.
+
+
+
+That said, the receiver issue was impossible to ignore. **160, 80 and 40 m were practically unusable.** On the low bands the IC-7300MK2 simply couldn't cope with the strong signals around us.
+
+## The radio: IC-7300MK2 in a contest environment
+
+### Why narrowing the filter didn't help
+
+The first thing every operator tries when a loud neighbour is splattering into the passband is to narrow the filter — tighten the bandwidth, shift the passband with twin PBT, move the edges away from the interference. I spent a good part of Field Day doing exactly that on the 7300MK2, and it was a futile effort.
+
+The reason is the radio's architecture. The IC-7300MK2 is a **direct-sampling SDR**: after a set of fairly broad band-pass filters, the whole band goes straight into the ADC. Every filter you set from the front panel is a DSP filter that works *after* the ADC. Narrowing it changes what you hear, but it does nothing to stop strong signals a few kHz away from reaching the ADC. Those signals still cause:
+
+- **ADC overload and desensitisation** — the whole receiver goes deaf when a big signal pushes the converter towards its limit,
+- **intermodulation products** that land right on top of the station you're trying to copy,
+- **reciprocal mixing** — the oscillator's phase noise mixes with the strong signal and raises the noise floor across the passband.
+
+None of that can be filtered out afterwards, because by the time the signal reaches the DSP filter, the damage has already been done. That's exactly what we saw on 160, 80 and 40 m.
+
+
+
+### How other radios compare
+
+The best independent reference for this is Rob Sherwood's (NC0B) [receiver test table](http://www.sherweng.com/table.html), sorted by third-order dynamic range at 2 kHz spacing — the number that best describes how a radio copes with a strong signal right next to a weak one. A higher number is better, and every 10 dB is a big difference in practice. One caveat: Sherwood measures direct-sampling radios slightly differently from conventional superhets, so the numbers are a guide, not an exact like-for-like comparison.
+
+**Icom IC-7300MK2 — 87–89 dB** (two samples tested). Direct-sampling, single receiver, broad band-pass filters in front of the ADC. Interestingly, both MK2 samples measured *worse* than the original IC-7300 (94–97 dB). A great home radio, but the weakest of this group in a strong-signal environment.
+
+**Kenwood TS-590SG — 92 dB.** An older design, but a conventional superheterodyne. On the main contest bands it uses **down-conversion** to a low first IF with **real crystal roofing filters** (500 Hz and 2.7 kHz). The roofing filter sits right behind the first mixer, so strong neighbouring signals are removed *before* they reach the later stages. Narrowing the filter on a TS-590SG actually protects the receiver, which is why it holds up better than its age would suggest.
+
+**Yaesu FTDX10 — 107 dB.** One of the best receivers on the whole Sherwood list, near the top alongside radios several times its price. It's a hybrid: a **down-conversion superhet with a 9 MHz IF and roofing filters (500 Hz, 3 kHz, 12 kHz)** for the receiver itself, plus a direct-sampling path used only for the spectrum scope. Its oscillator phase noise is also very low (152 dBc/Hz at 10 kHz versus 144–147 for the 7300MK2), so reciprocal mixing is much less of a problem. A loud neighbour 2 kHz away is simply stopped by the roofing filter.
+
+**Icom IC-7610 — 96–98 dB.** The next step up in Icom's lineup. It's still a direct-sampling radio, so the underlying principle is the same as the 7300MK2, but every part of the chain is better:
+
+- a **digital preselector** with sharper front-end filtering than the 7300's band-pass filters, so less of the band reaches the ADC,
+- the **IP+** function, which improves intermodulation performance in strong-signal conditions,
+- much lower reciprocal mixing (RMDR of 112 dB at 2.5 kHz spacing),
+- **two independent receivers with two separate ADCs** — you can listen on two frequencies, or two bands, at the same time.
+
+It doesn't reach the FTDX10's close-in numbers, but in a multi-station environment it's a clear step above the 7300MK2, and the dual receiver is a big operating advantage.
+
+### What else helps
+
+Even with better radios, a field site needs more than a good transceiver:
+
+- **external high-rejection band-pass filters** on every station,
+- separate **receive antennas** — the 7300MK2 and the 7610 both have RX antenna connectors, so external filters and dedicated RX antennas can be looped in without touching the transmit path.
+
+## Next year: FTDX10 + IC-7610
+
+For both contests in 2027 we'll be running a **Yaesu FTDX10** and an **Icom IC-7610**. That solves both of this year's main problems at once: two radios make a run + inband setup possible in WW Digi, and both have far better strong-signal performance than the 7300MK2 — which should finally make the low bands usable on Field Day.
+
+## Takeaways
+
+1. **Short callsign for FT8.** S510ARMY on SSB, S59TIM on digital.
+2. **Two stations for multi-single** — run plus an interlocked inband station.
+3. **A narrower DSP filter doesn't fix a receiver that's already overloaded.** Roofing filters, a better front end and external band-pass filters do.
+4. **RX antennas** — the single biggest improvement we can make for FT8.
+5. **Spiderbeam instead of the hexbeam** for more gain and front-to-back on 20/15/10 m.
+6. **FTDX10 and IC-7610** on the operating positions next year.
+
+Huge thanks to everyone who helped set up, operated and tore everything down again — and to Radioklub Vezist S50VZZ and the 72nd Brigade of the Slovenian Army for making these operations possible. See you in the field next year!
+
+73 de S58Q
+
+
