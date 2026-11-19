@@ -1,24 +1,36 @@
-import type { Metadata } from 'next';
-import { JetBrains_Mono, Space_Grotesk } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
+import { Bricolage_Grotesque, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google';
+import Providers from '@/components/Providers';
+import { CALLSIGN, FORMER_CALLSIGN, OWNER_NAME } from '@/lib/station';
 import './globals.css';
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk'
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin', 'latin-ext'],
+  variable: '--font-bricolage'
+});
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600'],
+  variable: '--font-plex-sans'
 });
 
 const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-jetbrains-mono'
 });
 
 export const metadata: Metadata = {
-  title: 'S57AZJ | Amateur Radio Operator',
-  description:
-    'Personal website of Aljaž Žugič Jehart (S57AZJ), featuring RF experiments, contesting and station projects.',
+  title: `${CALLSIGN} | Amateur Radio Operator`,
+  description: `Personal website of ${OWNER_NAME} (${CALLSIGN}, ex ${FORMER_CALLSIGN}), featuring RF experiments, contesting and station projects.`,
+  keywords: [CALLSIGN, FORMER_CALLSIGN, 'amateur radio', 'ham radio', 'contesting', 'Slovenia'],
   icons: {
-    icon: 'public/favicon.png'
+    icon: '/images/favicon.png'
   }
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0a0c0f'
 };
 
 export default function RootLayout({
@@ -27,8 +39,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${jetBrainsMono.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${bricolage.variable} ${plexSans.variable} ${jetBrainsMono.variable}`}
+    >
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
