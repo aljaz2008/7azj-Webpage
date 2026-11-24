@@ -1,23 +1,31 @@
 import type { Metadata, Viewport } from 'next';
-import { Bricolage_Grotesque, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import Providers from '@/components/Providers';
 import { CALLSIGN, FORMER_CALLSIGN, OWNER_NAME } from '@/lib/station';
 import './globals.css';
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-bricolage'
+// Self-hosted (OFL) so builds work offline and the CSP never has to allow a font host.
+// Subset to Latin + Latin Extended; Bricolage is pinned at opsz 96 / wdth 100,
+// which is what the Google Fonts build of it served before.
+const bricolage = localFont({
+  src: '../fonts/BricolageGrotesque-Variable.woff2',
+  weight: '200 800',
+  variable: '--font-bricolage',
+  display: 'swap'
 });
 
-const plexSans = IBM_Plex_Sans({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600'],
-  variable: '--font-plex-sans'
+const plexSans = localFont({
+  src: '../fonts/IBMPlexSans-Variable.woff2',
+  weight: '400 600',
+  variable: '--font-plex-sans',
+  display: 'swap'
 });
 
-const jetBrainsMono = JetBrains_Mono({
-  subsets: ['latin', 'latin-ext'],
-  variable: '--font-jetbrains-mono'
+const jetBrainsMono = localFont({
+  src: '../fonts/JetBrainsMono-Variable.woff2',
+  weight: '100 800',
+  variable: '--font-jetbrains-mono',
+  display: 'swap'
 });
 
 export const metadata: Metadata = {
