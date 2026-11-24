@@ -2,13 +2,13 @@ import Image from 'next/image';
 import { ArrowUpRight } from 'lucide-react';
 
 import { DiscordIcon, LinkedinIcon } from '@/components/BrandIcons';
-import Globe from '@/components/GlobeLazy';
 import ContestTable from '@/components/ContestTable';
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
 import ProjectsList from '@/components/ProjectsList';
 import Reveal from '@/components/Reveal';
 import Section from '@/components/Section';
+import WorkedMap from '@/components/WorkedMap';
 import {
   CALLSIGN,
   CALLSIGN_CHANGED,
@@ -185,11 +185,15 @@ export default function HomePage() {
             <ContestTable entries={contestData} />
           </div>
 
-          <div className="relative mt-16">
-            <Globe />
-            <p className={`${eyebrow} -mt-4 text-center`}>
-              QSO paths from {LOCATOR} · drag to rotate
+          <div className="mt-20 border-t border-border pt-16">
+            <h3 className="font-heading text-2xl font-semibold text-primary">Where the signals went</h3>
+            <p className="mt-3 max-w-2xl text-secondary">
+              The countries and grid squares in my log, plotted the way a beam heading sees
+              the world: great-circle distance and bearing from {LOCATOR}.
             </p>
+            <div className="mt-10">
+              <WorkedMap />
+            </div>
           </div>
         </Section>
 
