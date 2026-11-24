@@ -10,11 +10,12 @@ import {
   OWNER_NAME
 } from '@/lib/station';
 
-const facts = [
+const facts: { label: string; value: string; href?: string }[] = [
   { label: 'Operator', value: OWNER_NAME },
   { label: 'Grid', value: LOCATOR },
   { label: 'CQ / ITU', value: '15 / 28' },
-  { label: 'Formerly', value: FORMER_CALLSIGN }
+  { label: 'Formerly', value: FORMER_CALLSIGN },
+  { label: 'QSL', value: 'QRZ.com, direct', href: '/#qsl' }
 ];
 
 /** Staggered entrance, pure CSS (.hero-rise in globals.css) so it runs before hydration. */
@@ -72,14 +73,25 @@ export default function Hero() {
 
       <dl
         style={rise(0.5)}
-        className="hero-rise relative mx-auto grid w-full max-w-6xl grid-cols-2 gap-y-6 border-t border-border py-8 md:grid-cols-4"
+        className="hero-rise relative mx-auto grid w-full max-w-6xl grid-cols-2 gap-y-6 border-t border-border py-8 md:grid-cols-3 lg:grid-cols-5"
       >
         {facts.map((fact) => (
           <div key={fact.label} className="pr-4">
             <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary">
               {fact.label}
             </dt>
-            <dd className="mt-1.5 text-primary">{fact.value}</dd>
+            <dd className="mt-1.5 text-primary">
+              {fact.href ? (
+                <a
+                  href={fact.href}
+                  className="underline decoration-border underline-offset-4 transition hover:text-accent hover:decoration-accent"
+                >
+                  {fact.value}
+                </a>
+              ) : (
+                fact.value
+              )}
+            </dd>
           </div>
         ))}
       </dl>

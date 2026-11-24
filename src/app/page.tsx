@@ -18,6 +18,7 @@ import {
   FORMER_CALLSIGN,
   LOCATION,
   LOCATOR,
+  QRZ_URL,
   contestData,
   contestStats,
   contestStation,
@@ -271,7 +272,33 @@ export default function HomePage() {
         </Section>
 
         <Section id="contact" index={5} label="Contact" title="Let's make a QSO.">
-          <Reveal className="space-y-12">
+          <Reveal>
+            <div id="qsl" className="scroll-mt-28">
+              <h3 className="font-heading text-2xl font-semibold text-primary">QSL</h3>
+              <dl className="mt-6 border-t border-border">
+                <div className="grid gap-2 border-b border-border py-5 sm:grid-cols-[12rem_1fr] sm:gap-6">
+                  <dt className="label pt-1">Logbook</dt>
+                  <dd>
+                    <a
+                      href={QRZ_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-primary underline decoration-border underline-offset-4 transition hover:text-accent hover:decoration-accent"
+                    >
+                      QRZ.com logbook ({CALLSIGN})
+                      <ArrowUpRight size={14} aria-hidden />
+                    </a>
+                  </dd>
+                </div>
+                <div className="grid gap-2 border-b border-border py-5 sm:grid-cols-[12rem_1fr] sm:gap-6">
+                  <dt className="label pt-1">Paper cards</dt>
+                  <dd className="text-primary">Direct QSL: address on QRZ.com</dd>
+                </div>
+              </dl>
+            </div>
+          </Reveal>
+
+          <Reveal className="mt-20 space-y-12">
             <div>
               <p className="max-w-2xl text-lg leading-relaxed text-secondary">
                 Always open to technical collaboration, contest team discussions and radio-software

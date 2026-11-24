@@ -9,7 +9,8 @@ const links = [
   { label: 'About', target: 'about' },
   { label: 'Contests', target: 'contests' },
   { label: 'Station', target: 'setup' },
-  { label: 'Projects', target: 'projects' }
+  { label: 'Projects', target: 'projects' },
+  { label: 'QSL', target: 'qsl' }
 ];
 
 export default function Navbar() {
