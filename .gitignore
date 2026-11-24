@@ -11,3 +11,6 @@ data/logs/*.adi
 data/logs/*.adif
 data/logs/*.log
 data/logs/*.cbr
+
+# Playwright MCP screenshots and scratch scripts
+.playwright-mcp/
