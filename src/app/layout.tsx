@@ -1,6 +1,17 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
-import { CALLSIGN, FORMER_CALLSIGN, OWNER_NAME } from '@/lib/station';
+import {
+  CALLSIGN,
+  EMAIL,
+  FORMER_CALLSIGN,
+  LINKEDIN_URL,
+  LOCATION,
+  LOCATOR,
+  OWNER_NAME,
+  QRZ_URL,
+  SITE_URL
+} from '@/lib/station';
+import { themeColor } from '@/lib/theme';
 import './globals.css';
 
 // Self-hosted (OFL) so builds work offline and the CSP never has to allow a font host.
@@ -27,17 +38,49 @@ const jetBrainsMono = localFont({
   display: 'swap'
 });
 
+const description = `${OWNER_NAME}, ${CALLSIGN} (ex ${FORMER_CALLSIGN}): contest operator and RF/electronics maker in ${LOCATION}. Contest results, station, QSL info and projects.`;
+
 export const metadata: Metadata = {
-  title: `${CALLSIGN} | Amateur Radio Operator`,
-  description: `Personal website of ${OWNER_NAME} (${CALLSIGN}, ex ${FORMER_CALLSIGN}), featuring RF experiments, contesting and station projects.`,
-  keywords: [CALLSIGN, FORMER_CALLSIGN, 'amateur radio', 'ham radio', 'contesting', 'Slovenia'],
-  icons: {
-    icon: '/images/favicon.png'
-  }
+  metadataBase: new URL(SITE_URL),
+  title: `${CALLSIGN} | ${OWNER_NAME}, amateur radio`,
+  description,
+  keywords: [
+    CALLSIGN,
+    FORMER_CALLSIGN,
+    LOCATOR,
+    'amateur radio',
+    'ham radio',
+    'contesting',
+    'Slovenia'
+  ],
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'profile',
+    siteName: CALLSIGN,
+    title: `${CALLSIGN} | ${OWNER_NAME}`,
+    description,
+    url: '/',
+    locale: 'en_GB'
+  },
+  twitter: { card: 'summary_large_image', title: `${CALLSIGN} | ${OWNER_NAME}`, description }
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0c0f'
+  themeColor: themeColor('background')
+};
+
+// schema.org Person, so search engines connect the name, both callsigns and the profiles.
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: OWNER_NAME,
+  alternateName: [CALLSIGN, FORMER_CALLSIGN],
+  url: SITE_URL,
+  email: `mailto:${EMAIL}`,
+  address: { '@type': 'PostalAddress', addressLocality: 'Ljubljana', addressCountry: 'SI' },
+  affiliation: { '@type': 'EducationalOrganization', name: 'Vegova Ljubljana' },
+  knowsAbout: ['Amateur radio', 'Radio contesting', 'RF engineering', 'Embedded systems'],
+  sameAs: [QRZ_URL, LINKEDIN_URL]
 };
 
 export default function RootLayout({
@@ -50,7 +93,16 @@ export default function RootLayout({
       lang="en"
       className={`${bricolage.variable} ${plexSans.variable} ${jetBrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          // JSON.stringify output only; '<' escaped so the payload can't close the tag
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, '\\u003c')
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

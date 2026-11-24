@@ -41,6 +41,12 @@ const nextConfig = {
 
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 
+  // Read with fs at render time (colour tokens for the OG image / worked map / theme-color,
+  // TTFs for the OG image), so they must ship inside the standalone server bundle.
+  outputFileTracingIncludes: {
+    '/**': ['./src/app/globals.css', './src/fonts/*.ttf']
+  },
+
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   }

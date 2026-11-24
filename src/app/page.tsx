@@ -17,6 +17,7 @@ import {
   EMAIL,
   FORMER_CALLSIGN,
   LOCATION,
+  LINKEDIN_URL,
   LOCATOR,
   QRZ_URL,
   contestData,
@@ -49,7 +50,7 @@ const studies = [
 const socials = [
   {
     label: 'LinkedIn',
-    href: 'https://linkedin.com/in/aljaž-žugič-jehart-9a5a66239',
+    href: LINKEDIN_URL,
     icon: <LinkedinIcon size={16} />
   },
   {

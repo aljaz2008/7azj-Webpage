@@ -9,6 +9,7 @@ export const LOCATION = 'Ljubljana, Slovenia';
 export const EMAIL = 's57azj@s57azj.eu';
 export const SITE_URL = 'https://s57azj.eu';
 export const QRZ_URL = `https://www.qrz.com/db/${CALLSIGN}`;
+export const LINKEDIN_URL = 'https://linkedin.com/in/aljaž-žugič-jehart-9a5a66239';
 
 export type StationGroup = { title: string; items: { text: string; status?: string }[] };
 

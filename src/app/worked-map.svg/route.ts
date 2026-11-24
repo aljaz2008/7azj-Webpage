@@ -1,26 +1,18 @@
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { themeColor } from '@/lib/theme';
 import { buildWorkedMapSvg } from '@/lib/worked-map';
 
 // Rendered once at build time from data/worked.json; served as a static, cacheable file.
 export const dynamic = 'force-static';
 
-/** Colours come from the @theme tokens in globals.css, so the map follows the palette. */
-function themeColor(css: string, name: string) {
-  const value = css.match(new RegExp(`--color-${name}:\\s*(#[0-9a-fA-F]{3,8})`))?.[1];
-  if (!value) throw new Error(`worked-map: --color-${name} not found in globals.css`);
-  return value;
-}
-
+// Colours come from the @theme tokens in globals.css, so the map follows the palette.
 export function GET() {
-  const css = readFileSync(join(process.cwd(), 'src/app/globals.css'), 'utf8');
   const svg = buildWorkedMapSvg({
-    card: themeColor(css, 'card'),
-    cardStrong: themeColor(css, 'card-strong'),
-    border: themeColor(css, 'border'),
-    secondary: themeColor(css, 'secondary'),
-    accent: themeColor(css, 'accent'),
-    primary: themeColor(css, 'primary')
+    card: themeColor('card'),
+    cardStrong: themeColor('card-strong'),
+    border: themeColor('border'),
+    secondary: themeColor('secondary'),
+    accent: themeColor('accent'),
+    primary: themeColor('primary')
   });
   return new Response(svg, {
     headers: {
