@@ -62,7 +62,7 @@ export const projects: ProjectItem[] = [
       alt: 'Contest Log Analyzer report: an hourly table of QSOs, cumulative QSOs, operators and bands',
       kind: 'screenshot'
     },
-    featured: true,
+    featured: false,
     writtenUp: true,
     Article: ContestLogAnalyzerArticle
   },
@@ -77,7 +77,7 @@ export const projects: ProjectItem[] = [
       alt: 'WAE RTTY Intel running on both monitors at S51A during WAE RTTY 2026',
       kind: 'photo'
     },
-    featured: false,
+    featured: true,
     writtenUp: true,
     Article: WaeRttyIntelArticle
   },
