@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -6,6 +5,8 @@ import { DiscordIcon, LinkedinIcon } from '@/components/BrandIcons';
 import ContestTable from '@/components/ContestTable';
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
+import Picture from '@/components/Picture';
+import { projectPath } from '@/lib/projects';
 import ProjectsList from '@/components/ProjectsList';
 import Reveal from '@/components/Reveal';
 import Section from '@/components/Section';
@@ -159,7 +160,7 @@ export default function HomePage() {
                     {item.projects.map((project) => (
                       <Link
                         key={project.slug}
-                        href={`/projects/${project.slug}`}
+                        href={projectPath(project.slug)}
                         className="text-secondary underline decoration-border underline-offset-4 transition hover:text-accent hover:decoration-accent"
                       >
                         {project.label}
@@ -246,12 +247,11 @@ export default function HomePage() {
           <Reveal className="mt-16">
             <figure>
               <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
-                <Image
-                  src="/images/shack.jpg"
+                <Picture
+                  name="shack"
                   alt="The S51A operating room: radios, keyboards and a row of monitors"
-                  fill
                   sizes="(min-width: 1280px) 890px, (min-width: 1024px) 70vw, 100vw"
-                  className="object-cover"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
                 <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
               </div>

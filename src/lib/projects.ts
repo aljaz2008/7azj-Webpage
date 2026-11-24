@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import type { ImageName } from '@/components/Picture';
 import CanSatArticle from '@/content/projects/cansat.mdx';
 import ContestLogAnalyzerArticle from '@/content/projects/contest-log-analyzer.mdx';
 import Esp32PttMatrixArticle from '@/content/projects/esp32-ptt-matrix.mdx';
@@ -9,14 +10,15 @@ import ShackCalendarArticle from '@/content/projects/shack-reservation-calendar.
 import FieldContestsArticle from '@/content/projects/ww-digi-field-day-2026.mdx';
 
 export type ProjectImage = {
-  src: string;
+  /** Source file in images/ (pre-sized by scripts/build-images.mjs) */
+  name: ImageName;
   alt: string;
   /** 'screenshot' images get a dark window frame instead of a photo crop */
   kind?: 'photo' | 'screenshot';
 };
 
 export type ProjectItem = {
-  /** URL segment: /projects/[slug] */
+  /** URL segment: /projects/[slug]/ */
   slug: string;
   title: string;
   summary: string;
@@ -40,7 +42,7 @@ export const projects: ProjectItem[] = [
       "Two contests, one field setup: S59TIM and S510ARMY with Radioklub Vezist and the Slovenian Army signals community. What worked, what didn't, and what we change next year.",
     tags: ['Field operation', 'Station setup', 'Contest'],
     image: {
-      src: '/images/vojska.jpeg',
+      name: 'vojska',
       alt: 'The field station: an army truck, antenna masts and a tent in a meadow',
       kind: 'photo'
     },
@@ -55,7 +57,7 @@ export const projects: ProjectItem[] = [
       'A Python tool that parses contest logs into an HTML report: QSOs per hour, activity graphs and the general contest summary, without reading the log by hand.',
     tags: ['Python', 'Contest', 'Automation'],
     image: {
-      src: '/images/Contest-analyzer.png',
+      name: 'contest-analyzer',
       alt: 'Contest Log Analyzer report: an hourly table of QSOs, cumulative QSOs, operators and bands',
       kind: 'screenshot'
     },
@@ -118,4 +120,6 @@ export const projects: ProjectItem[] = [
 
 export const featuredProjects = projects.filter((p) => p.featured && p.image).slice(0, 3);
 export const otherProjects = projects.filter((p) => !featuredProjects.includes(p));
+/** Trailing slash matches trailingSlash: true, so static hosts serve it without a redirect */
+export const projectPath = (slug: string) => `/projects/${slug}/`;
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);

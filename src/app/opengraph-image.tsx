@@ -7,6 +7,8 @@ import { themeColor } from '@/lib/theme';
 export const alt = `${CALLSIGN}: amateur radio station of ${OWNER_NAME}, ${LOCATION}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+// Static export: rendered once at build into out/
+export const dynamic = 'force-static';
 
 // Same typography as the hero. ImageResponse needs TTF/OTF, so these are static
 // instances of the self-hosted variable fonts (see src/fonts).

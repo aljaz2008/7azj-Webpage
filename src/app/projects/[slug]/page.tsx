@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import ProjectMedia from '@/components/ProjectMedia';
 import SiteFooter from '@/components/SiteFooter';
-import { getProject, projects } from '@/lib/projects';
+import { getProject, projectPath, projects } from '@/lib/projects';
 import { CALLSIGN } from '@/lib/station';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -22,12 +22,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${project.title} | ${CALLSIGN}`,
     description: project.summary,
-    alternates: { canonical: `/projects/${project.slug}` },
+    alternates: { canonical: projectPath(project.slug) },
     openGraph: {
       type: 'article',
       title: project.title,
       description: project.summary,
-      url: `/projects/${project.slug}`
+      url: projectPath(project.slug),
+      // A page-level openGraph replaces the root one, so restate the shared card image
+      images: [
+        { url: '/opengraph-image', width: 1200, height: 630, alt: `${CALLSIGN} amateur radio` }
+      ]
     }
   };
 }

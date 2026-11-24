@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Picture from '@/components/Picture';
 import type { ProjectImage } from '@/lib/projects';
 
 type Props = {
@@ -28,14 +28,12 @@ export default function ProjectMedia({ image, decorative, sizes, lcp, className 
           <span className="label truncate">HTML report</span>
         </div>
         <div className="relative aspect-[16/9]">
-          <Image
-            src={image.src}
+          <Picture
+            name={image.name}
             alt={alt}
-            fill
             sizes={sizes}
-            fetchPriority={lcp ? 'high' : undefined}
-            loading={lcp ? 'eager' : undefined}
-            className="object-cover object-left-top brightness-80"
+            lcp={lcp}
+            className="absolute inset-0 h-full w-full object-cover object-left-top brightness-80"
           />
         </div>
       </div>
@@ -44,14 +42,12 @@ export default function ProjectMedia({ image, decorative, sizes, lcp, className 
 
   return (
     <div className={`relative aspect-[16/10] overflow-hidden rounded-lg ${className}`}>
-      <Image
-        src={image.src}
+      <Picture
+        name={image.name}
         alt={alt}
-        fill
         sizes={sizes}
-        fetchPriority={lcp ? 'high' : undefined}
-        loading={lcp ? 'eager' : undefined}
-        className="object-cover"
+        lcp={lcp}
+        className="absolute inset-0 h-full w-full object-cover"
       />
       <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
     </div>

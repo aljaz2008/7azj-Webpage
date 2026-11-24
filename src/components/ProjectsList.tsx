@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import ProjectMedia from '@/components/ProjectMedia';
 import Reveal from '@/components/Reveal';
-import { featuredProjects, otherProjects } from '@/lib/projects';
+import { featuredProjects, otherProjects, projectPath } from '@/lib/projects';
 
 /** Up to three featured projects large, then everything else as a compact list. */
 export default function ProjectsList() {
@@ -13,7 +13,7 @@ export default function ProjectsList() {
           <Reveal key={project.slug}>
             <article className="group grid items-center gap-8 md:grid-cols-2 md:gap-12">
               <Link
-                href={`/projects/${project.slug}`}
+                href={projectPath(project.slug)}
                 tabIndex={-1}
                 aria-hidden
                 className={`block ${i % 2 ? 'md:order-2' : ''}`}
@@ -32,7 +32,7 @@ export default function ProjectsList() {
                 </h3>
                 <p className="mt-4 leading-relaxed text-secondary">{project.summary}</p>
                 <Link
-                  href={`/projects/${project.slug}`}
+                  href={projectPath(project.slug)}
                   className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary underline decoration-border underline-offset-8 transition hover:decoration-accent"
                 >
                   Read the write-up
@@ -52,7 +52,7 @@ export default function ProjectsList() {
             {otherProjects.map((project) => (
               <li key={project.slug} className="border-b border-border">
                 <Link
-                  href={`/projects/${project.slug}`}
+                  href={projectPath(project.slug)}
                   className="group grid gap-x-8 gap-y-2 py-5 md:grid-cols-[minmax(0,16rem)_1fr_auto] md:items-baseline"
                 >
                   <span className="font-heading text-lg font-semibold text-primary transition group-hover:text-accent">
