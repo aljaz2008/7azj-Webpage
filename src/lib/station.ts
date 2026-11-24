@@ -84,11 +84,11 @@ const SRC = {
   yota: { label: 'contest.ham-yota.com', url: 'https://contest.ham-yota.com/results' },
   bartg: { label: 'bartg.rsgbcc.org', url: 'https://bartg.rsgbcc.org/' },
   wae: {
-    label: 'DARC WAE results',
+    label: 'darc.de (WAE)',
     url: 'https://www.darc.de/der-club/referate/conteste/wae-dx-contest/'
   },
   fieldDay: {
-    label: 'DARC Field Day results',
+    label: 'darc.de (Field Day)',
     url: 'https://www.darc.de/der-club/referate/conteste/iaru-region-1-fieldday/'
   },
   claimed: { label: '3830scores.com', url: 'https://www.3830scores.com/' }

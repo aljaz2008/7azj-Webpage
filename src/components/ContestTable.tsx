@@ -79,7 +79,7 @@ function ContestRow({ entry }: { entry: ContestEntry }) {
       <div className="col-span-2 font-mono text-sm text-primary md:col-span-1 md:text-right">
         <span className={cellLabel}>Score</span>
         {num(entry.score)}
-        {entry.scoreType === 'claimed' ? (
+        {entry.scoreType === 'claimed' && entry.score !== null ? (
           <span
             title="Claimed score, before the sponsor's log check"
             className="ml-2 rounded border border-border px-1.5 py-px font-sans text-xs text-secondary"
