@@ -7,7 +7,6 @@ import { CALLSIGN } from '@/lib/station';
 
 const links = [
   { label: 'About', target: 'about' },
-  { label: 'School', target: 'school' },
   { label: 'Contests', target: 'contests' },
   { label: 'Station', target: 'setup' },
   { label: 'Projects', target: 'projects' }

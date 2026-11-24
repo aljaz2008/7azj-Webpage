@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
 import { DiscordIcon, LinkedinIcon } from '@/components/BrandIcons';
@@ -25,26 +26,22 @@ import {
 } from '@/lib/station';
 import { compact, thousands } from '@/lib/format';
 
-const interests = [
-  'Contest operating',
-  'RF experimentation',
-  'Antenna design',
-  'Electronics projects',
-  'Radio software'
-];
-
+/** The three study areas, each tied to something I've built (or am building). */
 const studies = [
   {
-    title: 'Engineering',
-    text: 'The fundamentals behind everything else: circuits, measurement and building things that work.'
+    area: 'Engineering',
+    projects: [
+      { slug: 'hf-antenna-switch', label: '100 W HF antenna switch' },
+      { slug: 'fan-vertical', label: 'Multiband fan vertical' }
+    ]
   },
   {
-    title: 'Embedded systems',
-    text: 'Microcontrollers and firmware for station automation, switching and test fixtures.'
+    area: 'Embedded systems',
+    projects: [{ slug: 'esp32-ptt-matrix', label: 'ESP32-S3 Ethernet PTT matrix' }]
   },
   {
-    title: 'Telecommunications',
-    text: 'Signal processing, modulation and propagation: the theory behind every QSO.'
+    area: 'Telecommunications',
+    projects: [{ slug: 'cansat', label: 'CanSat: 433 MHz LoRa and 868 MHz GFSK links' }]
   }
 ];
 
@@ -115,71 +112,69 @@ export default function HomePage() {
         <Hero />
 
         <Section id="about" index={1} label="About" title="Hello, I'm Aljaž.">
-          <div className="grid gap-14 xl:grid-cols-[1fr_280px]">
+          <div className="grid gap-14 xl:grid-cols-[1fr_17.5rem]">
             <Reveal className="max-w-2xl space-y-6 text-lg leading-relaxed text-secondary">
               <p className="text-2xl leading-snug text-primary md:text-3xl">
-                A young amateur radio operator from Ljubljana, on the air as{' '}
+                I&apos;m a radio amateur and a student at Vegova Ljubljana, on the air as{' '}
                 <span className="text-accent">{CALLSIGN}</span>.
               </p>
               <p>
-                I received my licence in February 2024 as {FORMER_CALLSIGN} and have spent every
-                spare moment since exploring radio technology, antennas, RF engineering and
-                contesting. In {CALLSIGN_CHANGED} I changed my callsign to {CALLSIGN}.
+                I got my licence in February 2024 as {FORMER_CALLSIGN}. Five months later I made my
+                first contest QSOs, in the YOTA Contest from S53AJK with S54UWU. Since then
+                I&apos;ve been on {contestStats.contests} contest entries, most of them from S51A
+                with the Slovenia Contest Club, and some in the field with Radioklub Vezist and the
+                Slovenian Army. In {CALLSIGN_CHANGED} I changed my callsign to {CALLSIGN}.
               </p>
               <p>
-                What I enjoy most is where the disciplines meet: building the antenna, writing the
-                software that drives the station, and then putting both to the test over a contest
-                weekend.
-              </p>
-              <p className="flex flex-wrap gap-x-3 gap-y-1 pt-2 text-base text-primary">
-                {interests.map((item, i) => (
-                  <span key={item} className="flex items-center gap-3">
-                    {i > 0 ? (
-                      <span aria-hidden className="text-accent">
-                        /
-                      </span>
-                    ) : null}
-                    {item}
-                  </span>
-                ))}
+                What I like most is where the disciplines meet: building the hardware, writing the
+                software that drives it, and then using both over a contest weekend.
               </p>
             </Reveal>
 
             <Reveal delay={0.1}>
               <figure className="border-l-2 border-accent pl-6">
-                <figcaption className={eyebrow}>Current focus</figcaption>
+                <figcaption className="label">Current focus</figcaption>
                 <blockquote className="mt-4 font-heading text-xl leading-snug text-primary">
-                  Building efficient HF contest workflows and software-defined tooling for station
-                  automation.
+                  Getting the 40/20/15/10 m fan vertical up at home.
                 </blockquote>
               </figure>
             </Reveal>
           </div>
-        </Section>
 
-        <Section
-          id="school"
-          index={2}
-          label="School"
-          title="Studying the theory behind the hobby."
-          intro="I am focused on technical studies, and school projects often feed directly into my amateur radio experiments, from signal processing prototypes to hardware test fixtures."
-        >
-          <div className="grid gap-10 md:grid-cols-3 md:gap-8">
-            {studies.map((item, i) => (
-              <Reveal key={item.title} delay={i * 0.08} className="border-t border-border pt-6">
-                <p className="font-mono text-xs text-accent">0{i + 1}</p>
-                <h3 className="mt-3 font-heading text-xl font-semibold text-primary">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-secondary">{item.text}</p>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal className="mt-20">
+            <h3 className="font-heading text-2xl font-semibold text-primary">
+              Studying at Vegova Ljubljana
+            </h3>
+            <p className="mt-3 max-w-2xl text-secondary">
+              Three subjects I study, and what I&apos;ve built or am building with each.
+            </p>
+            <dl className="mt-8 border-t border-border">
+              {studies.map((item) => (
+                <div
+                  key={item.area}
+                  className="grid gap-2 border-b border-border py-5 sm:grid-cols-[12rem_1fr] sm:gap-6"
+                >
+                  <dt className="font-heading text-lg font-semibold text-primary">{item.area}</dt>
+                  <dd className="flex flex-wrap gap-x-6 gap-y-1">
+                    {item.projects.map((project) => (
+                      <Link
+                        key={project.slug}
+                        href={`/projects/${project.slug}`}
+                        className="text-secondary underline decoration-border underline-offset-4 transition hover:text-accent hover:decoration-accent"
+                      >
+                        {project.label}
+                      </Link>
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
         </Section>
 
         <Section
           id="contests"
-          index={3}
+          index={2}
           label="Contests"
           title="On the air, against the clock."
           intro={
@@ -223,7 +218,7 @@ export default function HomePage() {
 
         <Section
           id="setup"
-          index={4}
+          index={3}
           label="Station"
           title="Two stations."
           intro={
@@ -267,7 +262,7 @@ export default function HomePage() {
 
         <Section
           id="projects"
-          index={5}
+          index={4}
           label="Projects"
           title="Selected projects."
           intro="Write-ups from the field and the workbench: what I built, what worked, and what I would change next time."
@@ -275,7 +270,7 @@ export default function HomePage() {
           <ProjectsList />
         </Section>
 
-        <Section id="contact" index={6} label="Contact" title="Let's make a QSO.">
+        <Section id="contact" index={5} label="Contact" title="Let's make a QSO.">
           <Reveal className="space-y-12">
             <div>
               <p className="max-w-2xl text-lg leading-relaxed text-secondary">
