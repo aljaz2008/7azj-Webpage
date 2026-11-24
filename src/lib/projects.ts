@@ -1,5 +1,11 @@
 import type { ComponentType } from 'react';
+import CanSatArticle from '@/content/projects/cansat.mdx';
 import ContestLogAnalyzerArticle from '@/content/projects/contest-log-analyzer.mdx';
+import Esp32PttMatrixArticle from '@/content/projects/esp32-ptt-matrix.mdx';
+import FanVerticalArticle from '@/content/projects/fan-vertical.mdx';
+import HfAntennaSwitchArticle from '@/content/projects/hf-antenna-switch.mdx';
+import PcbQslDummyLoadArticle from '@/content/projects/pcb-qsl-dummy-load.mdx';
+import ShackCalendarArticle from '@/content/projects/shack-reservation-calendar.mdx';
 import FieldContestsArticle from '@/content/projects/ww-digi-field-day-2026.mdx';
 
 export type ProjectImage = {
@@ -56,6 +62,57 @@ export const projects: ProjectItem[] = [
     featured: true,
     writtenUp: true,
     Article: ContestLogAnalyzerArticle
+  },
+  {
+    slug: 'esp32-ptt-matrix',
+    title: 'ESP32-S3 Ethernet PTT matrix',
+    summary:
+      '8 PTT inputs mapped to 8 amplifier and radio keying outputs, configured from a web page. Runs on 13.8 V; outputs only short to ground.',
+    tags: ['ESP32-S3', 'Ethernet', 'Station automation'],
+    writtenUp: false,
+    Article: Esp32PttMatrixArticle
+  },
+  {
+    slug: 'hf-antenna-switch',
+    title: '100 W HF antenna switch',
+    summary: 'One radio to 3–4 antennas plus a receive antenna, with its own ESP32 controller.',
+    tags: ['RF', 'ESP32', 'Switching'],
+    writtenUp: false,
+    Article: HfAntennaSwitchArticle
+  },
+  {
+    slug: 'fan-vertical',
+    title: 'Multiband fan vertical',
+    summary: '40/20/15/10 m fan vertical on a Spiderbeam 10 m mast for the home station.',
+    tags: ['Antenna', 'HF'],
+    status: 'in progress',
+    writtenUp: false,
+    Article: FanVerticalArticle
+  },
+  {
+    slug: 'cansat',
+    title: 'CanSat',
+    summary: '433 MHz LoRa telemetry and an 868 MHz GFSK image downlink.',
+    tags: ['LoRa', '433 MHz', '868 MHz'],
+    writtenUp: false,
+    Article: CanSatArticle
+  },
+  {
+    slug: 'pcb-qsl-dummy-load',
+    title: 'PCB QSL card and dummy load',
+    summary: 'A KiCad concept for QRP-SOLUTIONS.',
+    tags: ['KiCad', 'PCB', 'QRP-SOLUTIONS'],
+    status: 'concept',
+    writtenUp: false,
+    Article: PcbQslDummyLoadArticle
+  },
+  {
+    slug: 'shack-reservation-calendar',
+    title: 'Contest shack reservation calendar',
+    summary: 'Booking calendar for the S51A contest station team.',
+    tags: ['Web app', 'S51A'],
+    writtenUp: false,
+    Article: ShackCalendarArticle
   }
 ];
 
