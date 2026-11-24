@@ -1,7 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 
 type RevealProps = {
   children: ReactNode;
@@ -9,17 +8,40 @@ type RevealProps = {
   className?: string;
 };
 
-/** Fades content up the first time it scrolls into view. */
+/**
+ * Fades content up the first time it scrolls into view.
+ *
+ * Progressive: the content is in the HTML and visible by default. It is only hidden
+ * (see [data-reveal] in globals.css) when scripting is on and motion is allowed, so
+ * crawlers, link previews, no-JS and reduced-motion visitors always see it.
+ */
 export default function Reveal({ children, delay = 0, className }: RevealProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.dataset.shown = '';
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
+    <div
+      ref={ref}
+      data-reveal
       className={className}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+      style={delay ? ({ '--reveal-delay': `${delay}s` } as CSSProperties) : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
