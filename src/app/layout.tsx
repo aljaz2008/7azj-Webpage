@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
-import Providers from '@/components/Providers';
 import { CALLSIGN, FORMER_CALLSIGN, OWNER_NAME } from '@/lib/station';
 import './globals.css';
 
@@ -51,9 +50,7 @@ export default function RootLayout({
       lang="en"
       className={`${bricolage.variable} ${plexSans.variable} ${jetBrainsMono.variable}`}
     >
-      <body>
-        <Providers>{children}</Providers>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

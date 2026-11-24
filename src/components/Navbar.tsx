@@ -1,6 +1,7 @@
 'use client';
 
 import { Menu, X } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { CALLSIGN } from '@/lib/station';
 
@@ -47,69 +48,75 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        solid ? 'border-b border-border bg-background/85 backdrop-blur-xl' : 'border-b border-transparent'
+        solid
+          ? 'border-b border-border bg-background/85 backdrop-blur-xl'
+          : 'border-b border-transparent'
       }`}
     >
       <div className="px-6 md:px-10">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between">
-        <a
-          href="#hero"
-          className="flex items-center gap-2.5 font-heading text-lg font-bold tracking-wide text-primary"
-          onClick={() => setOpen(false)}
-        >
-          <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)]" />
-          {CALLSIGN}
-        </a>
-
-        <nav aria-label="Main" className="hidden items-center gap-8 md:flex">
-          {links.map((link) => (
-            <a
-              key={link.target}
-              href={`#${link.target}`}
-              aria-current={active === link.target ? 'true' : undefined}
-              className={`relative text-sm transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-accent after:transition-all ${
-                active === link.target
-                  ? 'text-primary after:w-full'
-                  : 'text-secondary after:w-0 hover:text-primary'
-              }`}
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            className="rounded-full border border-accent/60 px-4 py-1.5 text-sm text-accent transition hover:bg-accent hover:text-background"
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 font-heading text-lg font-bold tracking-wide text-primary"
+            onClick={() => setOpen(false)}
           >
-            Contact
-          </a>
-        </nav>
+            <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent)]" />
+            {CALLSIGN}
+          </Link>
 
-        <button
-          type="button"
-          className="-mr-1.5 p-1.5 text-secondary md:hidden"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </div>
+          <nav aria-label="Main" className="hidden items-center gap-8 md:flex">
+            {links.map((link) => (
+              <Link
+                key={link.target}
+                href={`/#${link.target}`}
+                aria-current={active === link.target ? 'true' : undefined}
+                className={`relative text-sm transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-accent after:transition-all ${
+                  active === link.target
+                    ? 'text-primary after:w-full'
+                    : 'text-secondary after:w-0 hover:text-primary'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href="/#contact"
+              className="rounded-full border border-accent/60 px-4 py-1.5 text-sm text-accent transition hover:bg-accent hover:text-background"
+            >
+              Contact
+            </Link>
+          </nav>
+
+          <button
+            type="button"
+            className="-mr-1.5 p-1.5 text-secondary md:hidden"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {open ? (
-        <nav id="mobile-nav" aria-label="Mobile" className="border-t border-border px-6 pb-6 pt-2 md:hidden">
+        <nav
+          id="mobile-nav"
+          aria-label="Mobile"
+          className="border-t border-border px-6 pb-6 pt-2 md:hidden"
+        >
           {[...links, { label: 'Contact', target: 'contact' }].map((link) => (
-            <a
+            <Link
               key={link.target}
-              href={`#${link.target}`}
+              href={`/#${link.target}`}
               onClick={() => setOpen(false)}
               className={`block border-b border-border py-3.5 font-heading text-xl ${
                 active === link.target ? 'text-accent' : 'text-primary'
               }`}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       ) : null}
