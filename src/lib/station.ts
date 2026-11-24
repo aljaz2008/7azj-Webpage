@@ -47,6 +47,14 @@ export const contestStation: StationGroup[] = [
 
 export type ContestMode = 'SSB' | 'RTTY' | 'FT8/FT4' | 'Mixed';
 
+export type Placing = {
+  scope: 'World' | 'Europe' | 'Slovenia' | 'Category' | 'Overall';
+  place: number;
+  of: number;
+  /** Official category name, e.g. "Multi-Single Low" */
+  category: string;
+};
+
 export type ContestEntry = {
   name: string;
   /** ISO date of the first contest day, used for sorting and filtering */
@@ -62,8 +70,10 @@ export type ContestEntry = {
   score: number | null;
   /** 'final' = sponsor's log-checked result; 'claimed' = pre-log-check (3830 or own claim) */
   scoreType: 'final' | 'claimed';
-  /** Only where the sponsor published a placing */
-  place?: string;
+  /** Official (log-checked) placings; `of` = entrants in that scope + category */
+  placings?: Placing[];
+  /** 'pending' = the sponsor hasn't published results yet */
+  placingsStatus?: 'final' | 'pending';
   /** Where the result was checked */
   source?: { label: string; url: string };
   club?: string;
@@ -77,19 +87,20 @@ const VEZIST = 'Radioklub Vezist S50VZZ';
 
 const SRC = {
   cqwwSsb: { label: 'cqww.com', url: 'https://www.cqww.com/results/' },
-  cqwwRtty: { label: 'cqwwrtty.com', url: 'https://www.cqwwrtty.com/' },
+  cqwwRtty: { label: 'cqwwrtty.com', url: 'https://www.cqwwrtty.com/results/' },
   cqwpxSsb: { label: 'cqwpx.com', url: 'https://cqwpx.com/results/' },
-  cqwpxRtty: { label: 'cqwpxrtty.com', url: 'https://www.cqwpxrtty.com/' },
-  wwDigi: { label: 'ww-digi.com', url: 'https://ww-digi.com/' },
+  cqwpxRtty: { label: 'cqwpxrtty.com', url: 'https://www.cqwpxrtty.com/results/' },
+  wwDigi: { label: 'ww-digi.com', url: 'https://ww-digi.com/results/' },
   yota: { label: 'contest.ham-yota.com', url: 'https://contest.ham-yota.com/results' },
-  bartg: { label: 'bartg.rsgbcc.org', url: 'https://bartg.rsgbcc.org/' },
+  // bartg.rsgbcc.org only redirects (via JavaScript) to bartg.org.uk
+  bartg: { label: 'bartg.org.uk', url: 'https://bartg.org.uk/log-information-and-results/' },
   wae: {
     label: 'darc.de (WAE)',
     url: 'https://www.darc.de/der-club/referate/conteste/wae-dx-contest/'
   },
   fieldDay: {
     label: 'darc.de (Field Day)',
-    url: 'https://www.darc.de/der-club/referate/conteste/iaru-region-1-fieldday/'
+    url: 'https://dxhf2.darc.de/~fdssblog/user.cgi?fc=loglist&form=referat&lang=en'
   },
   claimed: { label: '3830scores.com', url: 'https://www.3830scores.com/' }
 } as const;
@@ -108,6 +119,7 @@ const contests: ContestEntry[] = [
     qsos: null,
     score: null,
     scoreType: 'claimed',
+    placingsStatus: 'pending',
     club: SCC,
     ops: ['S58Q'],
     note: 'Log submitted; results and full operator list pending.'
@@ -122,6 +134,7 @@ const contests: ContestEntry[] = [
     qsos: 2557,
     score: 2991972,
     scoreType: 'claimed',
+    placingsStatus: 'pending',
     source: SRC.claimed,
     club: SCC,
     ops: ['S50NB', 'S50V', 'S54VV', 'S55O', 'S58Q', 'S59Z'],
@@ -137,7 +150,11 @@ const contests: ContestEntry[] = [
     qsos: 293,
     score: 67665,
     scoreType: 'final',
-    place: '9th',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'Category', place: 9, of: 10, category: 'Portable multi-op low power assisted' },
+      { scope: 'Slovenia', place: 4, of: 4, category: 'Portable multi-op low power assisted' }
+    ],
     source: SRC.fieldDay,
     club: VEZIST,
     ops: ['S59NV', 'S50V', 'S57AZJ', 'S57GG', 'S57DD', 'S51BW', 'S56WKZ']
@@ -152,6 +169,12 @@ const contests: ContestEntry[] = [
     qsos: 400,
     score: 70840,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 5, of: 17, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 3, of: 8, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 2, category: 'Multi-Single Low' }
+    ],
     source: SRC.wwDigi,
     club: VEZIST,
     ops: ['S50NI', 'S50V', 'S56WKZ', 'S57AZJ', 'S57DD', 'S57GG', 'S59NV'],
@@ -166,7 +189,8 @@ const contests: ContestEntry[] = [
     qsos: 688,
     score: 336288,
     scoreType: 'final',
-    place: '5th',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 5, of: 22, category: 'Multi-op single-TX YOTA' }],
     source: SRC.yota,
     club: SCC,
     ops: ['S50NI', 'S57AZJ', 'S53DX']
@@ -181,6 +205,12 @@ const contests: ContestEntry[] = [
     qsos: 1697,
     score: 2904352,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 52, of: 156, category: 'Multi-Single High' },
+      { scope: 'Europe', place: 32, of: 88, category: 'Multi-Single High' },
+      { scope: 'Slovenia', place: 2, of: 4, category: 'Multi-Single High' }
+    ],
     source: SRC.cqwpxSsb,
     club: SCC,
     ops: ['S50NB', 'S50V', 'S54VV', 'S55O', 'S57AZJ', 'S57L']
@@ -195,6 +225,12 @@ const contests: ContestEntry[] = [
     qsos: 1767,
     score: 3905316,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 3, of: 39, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 1, of: 16, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 1, category: 'Multi-Single Low' }
+    ],
     source: SRC.cqwpxRtty,
     club: SCC,
     ops: ['S50NB', 'S50V', 'S51MG', 'S55BG', 'S55O', 'S57AZJ'],
@@ -210,7 +246,11 @@ const contests: ContestEntry[] = [
     qsos: 756,
     score: 223020,
     scoreType: 'final',
-    place: '1st, multi-op',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'Category', place: 1, of: 2, category: 'Multi-Multi' },
+      { scope: 'Overall', place: 7, of: 473, category: 'All sections' }
+    ],
     source: SRC.bartg,
     club: SCC,
     ops: ['S51MG', 'S57AZJ', 'S50NB'],
@@ -225,7 +265,8 @@ const contests: ContestEntry[] = [
     qsos: 422,
     score: 267148,
     scoreType: 'final',
-    place: '3rd',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 3, of: 11, category: 'Single-op all-band YOTA' }],
     source: SRC.yota,
     club: SCC,
     ops: ['S57AZJ']
@@ -240,7 +281,11 @@ const contests: ContestEntry[] = [
     qsos: 919,
     score: 1242919,
     scoreType: 'final',
-    place: '14th Europe SO HP',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'Europe', place: 14, of: 206, category: 'Single-Op High' },
+      { scope: 'Slovenia', place: 2, of: 7, category: 'Single-Op High' }
+    ],
     source: SRC.wae,
     club: SCC,
     ops: ['S57AZJ'],
@@ -256,6 +301,12 @@ const contests: ContestEntry[] = [
     qsos: 298,
     score: 60030,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 112, of: 171, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 67, of: 93, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 3, of: 3, category: 'Multi-Single Low' }
+    ],
     source: SRC.cqwwSsb,
     club: VEZIST,
     ops: ['S59NV', 'S57AZJ', 'S5/HA2LY']
@@ -270,6 +321,12 @@ const contests: ContestEntry[] = [
     qsos: 2070,
     score: 3664458,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 5, of: 45, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 3, of: 27, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 2, category: 'Multi-Single Low' }
+    ],
     source: SRC.cqwwRtty,
     club: SCC,
     ops: ['S50NB', 'S51MG', 'S54KM', 'S54VV', 'S55BG', 'S55O', 'S57AZJ']
@@ -284,6 +341,12 @@ const contests: ContestEntry[] = [
     qsos: 326,
     score: 34008,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 12, of: 24, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 6, of: 10, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 1, category: 'Multi-Single Low' }
+    ],
     source: SRC.wwDigi,
     club: VEZIST,
     ops: ['S57DD', 'S57GG', 'S57NIK', 'S57AZJ', 'S50V']
@@ -297,7 +360,8 @@ const contests: ContestEntry[] = [
     qsos: 651,
     score: 464370,
     scoreType: 'final',
-    place: '5th',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 5, of: 16, category: 'Multi-op single-TX YOTA' }],
     source: SRC.yota,
     club: SCC,
     ops: ['S57AZJ', 'HA2LY']
@@ -312,6 +376,12 @@ const contests: ContestEntry[] = [
     qsos: 4193,
     score: 11682792,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 23, of: 75, category: 'Multi-Two' },
+      { scope: 'Europe', place: 13, of: 31, category: 'Multi-Two' },
+      { scope: 'Slovenia', place: 1, of: 1, category: 'Multi-Two' }
+    ],
     source: SRC.cqwpxSsb,
     club: SCC,
     ops: [
@@ -338,7 +408,8 @@ const contests: ContestEntry[] = [
     qsos: 739,
     score: 505020,
     scoreType: 'final',
-    place: '6th',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 6, of: 15, category: 'Single-op all-band YOTA' }],
     source: SRC.yota,
     ops: ['S57AZJ'],
     note: '228 multipliers.'
@@ -353,6 +424,12 @@ const contests: ContestEntry[] = [
     qsos: 1777,
     score: 4073700,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 5, of: 45, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 3, of: 24, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 2, category: 'Multi-Single Low' }
+    ],
     source: SRC.cqwpxRtty,
     club: SCC,
     ops: ['S50NB', 'S51MG', 'S55O', 'S57AZJ'],
@@ -367,7 +444,8 @@ const contests: ContestEntry[] = [
     qsos: 257,
     score: 114835,
     scoreType: 'final',
-    place: '22nd',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 22, of: 37, category: 'Multi-op single-TX YOTA' }],
     source: SRC.yota,
     club: VEZIST,
     ops: ['S57AZJ', 'S59NV'],
@@ -383,7 +461,11 @@ const contests: ContestEntry[] = [
     qsos: 738,
     score: 538938,
     scoreType: 'final',
-    place: '39th Europe SO LP',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'Europe', place: 39, of: 660, category: 'Single-Op Low' },
+      { scope: 'Slovenia', place: 1, of: 6, category: 'Single-Op Low' }
+    ],
     source: SRC.wae,
     ops: ['S57AZJ'],
     note: '474 multipliers, 399 QTCs. My first contest under my own callsign.',
@@ -399,6 +481,12 @@ const contests: ContestEntry[] = [
     qsos: 1694,
     score: 1709362,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 16, of: 151, category: 'Multi-Single Low' },
+      { scope: 'Europe', place: 10, of: 70, category: 'Multi-Single Low' },
+      { scope: 'Slovenia', place: 1, of: 4, category: 'Multi-Single Low' }
+    ],
     source: SRC.cqwwSsb,
     club: SCC,
     ops: ['S50NB', 'S51MG', 'S54VV', 'S57AZJ', 'S57FJ']
@@ -413,6 +501,12 @@ const contests: ContestEntry[] = [
     qsos: 2497,
     score: 4180195,
     scoreType: 'final',
+    placingsStatus: 'final',
+    placings: [
+      { scope: 'World', place: 5, of: 50, category: 'Multi-Single High' },
+      { scope: 'Europe', place: 5, of: 31, category: 'Multi-Single High' },
+      { scope: 'Slovenia', place: 1, of: 2, category: 'Multi-Single High' }
+    ],
     source: SRC.cqwwRtty,
     club: SCC,
     ops: ['S50NB', 'S50V', 'S51MG', 'S54A', 'S54L', 'S55BG', 'S55O', 'S56B', 'S57AZJ'],
@@ -427,7 +521,8 @@ const contests: ContestEntry[] = [
     qsos: 68,
     score: 9799,
     scoreType: 'final',
-    place: '17th',
+    placingsStatus: 'final',
+    placings: [{ scope: 'Category', place: 17, of: 19, category: 'Multi-op single-TX YOTA' }],
     source: SRC.yota,
     ops: ['S57AZJ', 'S54UWU'],
     note: '239 points, 41 multipliers. Five months after getting licensed.',

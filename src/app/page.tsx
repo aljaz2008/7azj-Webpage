@@ -28,6 +28,7 @@ import {
   type StationGroup
 } from '@/lib/station';
 import { compact, thousands } from '@/lib/format';
+import { bestPlacing, ordinal, shortCategory } from '@/lib/placings';
 
 /** The three study areas, each tied to something I've built (or am building). */
 const studies = [
@@ -62,6 +63,7 @@ const socials = [
 ];
 
 const best = contestStats.bestFinal;
+const bestPlace = bestPlacing(contestData);
 
 const stats = [
   { value: String(contestStats.contests), label: 'Contest entries' },
@@ -74,7 +76,15 @@ const stats = [
     label: best
       ? `Best final score, ${best.name} ${best.start.slice(0, 4)}, ${best.category}`
       : 'Best final score'
-  }
+  },
+  ...(bestPlace
+    ? [
+        {
+          value: `${ordinal(bestPlace.placing.place)} ${bestPlace.placing.scope}`,
+          label: `Best placing, ${bestPlace.entry.name} ${bestPlace.entry.start.slice(0, 4)} (${shortCategory(bestPlace.placing.category)})`
+        }
+      ]
+    : [])
 ];
 
 function StationList({ groups }: { groups: StationGroup[] }) {
@@ -187,11 +197,11 @@ export default function HomePage() {
           }
         >
           <Reveal>
-            <dl className="grid gap-x-6 gap-y-6 border-y border-border py-8 sm:grid-cols-3">
+            <dl className="grid gap-x-6 gap-y-6 border-y border-border py-8 sm:grid-cols-2 lg:grid-cols-4">
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse">
                   <dt className="mt-2 max-w-[24ch] text-sm text-secondary">{stat.label}</dt>
-                  <dd className="font-heading text-4xl font-bold tracking-tight text-primary tabular-nums lg:text-5xl">
+                  <dd className="font-heading text-4xl font-bold tracking-tight whitespace-nowrap text-primary tabular-nums">
                     {stat.value}
                   </dd>
                 </div>

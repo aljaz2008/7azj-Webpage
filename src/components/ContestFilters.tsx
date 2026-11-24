@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 const MODE_FILTERS: { label: string; modes: string[] | null }[] = [
   { label: 'All modes', modes: null },
@@ -46,14 +46,30 @@ function FilterGroup({
  */
 export default function ContestFilters({
   listId,
-  rows
+  podiumToggleId,
+  rows,
+  children
 }: {
   listId: string;
-  /** mode and year of each row, in list order */
-  rows: { mode: string; year: string }[];
+  /** id of the server-rendered "Podiums only" checkbox (CSS does the hiding) */
+  podiumToggleId: string;
+  /** mode, year and podium flag of each row, in list order */
+  rows: { mode: string; year: string; podium: boolean }[];
+  /** the podium toggle, rendered next to the JS-only filters */
+  children: ReactNode;
 }) {
   const [mode, setMode] = useState(MODE_FILTERS[0].label);
   const [year, setYear] = useState(ALL_YEARS);
+  const [podiumsOnly, setPodiumsOnly] = useState(false);
+
+  // Follow the checkbox (it filters rows via CSS on its own; this only keeps the count right)
+  useEffect(() => {
+    const box = document.getElementById(podiumToggleId) as HTMLInputElement | null;
+    if (!box) return;
+    const onChange = () => setPodiumsOnly(box.checked);
+    box.addEventListener('change', onChange);
+    return () => box.removeEventListener('change', onChange);
+  }, [podiumToggleId]);
 
   const years = Array.from(new Set(rows.map((r) => r.year)));
   const modes = MODE_FILTERS.find((f) => f.label === mode)?.modes ?? null;
@@ -61,7 +77,7 @@ export default function ContestFilters({
     (r) => (!modes || modes.includes(r.mode)) && (year === ALL_YEARS || r.year === year)
   );
   const total = rows.length;
-  const visible = matches.filter(Boolean).length;
+  const visible = matches.filter((m, i) => m && (!podiumsOnly || rows[i].podium)).length;
 
   // Sync the server-rendered rows with the current filter
   useEffect(() => {
@@ -71,24 +87,27 @@ export default function ContestFilters({
   }, [listId, matches]);
 
   return (
-    <div className="js-only mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+    <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div className="flex flex-col gap-3">
-        <FilterGroup
-          name="Filter by mode"
-          options={MODE_FILTERS.map((f) => f.label)}
-          value={mode}
-          onChange={setMode}
-        />
-        <FilterGroup
-          name="Filter by year"
-          options={[ALL_YEARS, ...years]}
-          value={year}
-          onChange={setYear}
-        />
+        <div className="js-only flex flex-col gap-3">
+          <FilterGroup
+            name="Filter by mode"
+            options={MODE_FILTERS.map((f) => f.label)}
+            value={mode}
+            onChange={setMode}
+          />
+          <FilterGroup
+            name="Filter by year"
+            options={[ALL_YEARS, ...years]}
+            value={year}
+            onChange={setYear}
+          />
+        </div>
+        {children}
       </div>
-      <p aria-live="polite" className="label">
+      <p aria-live="polite" className="js-only label">
         {visible === 0
-          ? 'No entries match. Pick another mode or year.'
+          ? 'No entries match. Pick another mode or year, or show all placings.'
           : `${visible} of ${total} entries`}
       </p>
     </div>
