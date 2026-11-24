@@ -162,7 +162,8 @@ body {
   color: var(--color-primary);
 }
 
-.mdx-content a {
+/* .icon-link opts out: icon links (e.g. GithubLink) match the site's contact links */
+.mdx-content a:not(.icon-link) {
   color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 3px;
