@@ -11,6 +11,7 @@ import Section from '@/components/Section';
 import {
   CALLSIGN,
   CALLSIGN_CHANGED,
+  EMAIL,
   FORMER_CALLSIGN,
   LOCATION,
   LOCATOR,
@@ -19,8 +20,6 @@ import {
   contestStats,
   isOwnCall
 } from '@/lib/station';
-
-const EMAIL = 's57azj@s57azj.eu';
 
 const interests = [
   'Contest operating',

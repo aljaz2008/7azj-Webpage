@@ -5,6 +5,8 @@ export const CALLSIGN_CHANGED = 'October 2026';
 export const OWNER_NAME = 'Aljaž Žugič Jehart';
 export const LOCATOR = 'JN76GB';
 export const LOCATION = 'Ljubljana, Slovenia';
+/** Contact address. The domain stays s57azj.eu after the callsign change. */
+export const EMAIL = 's57azj@s57azj.eu';
 
 export type ContestEntry = {
   name: string;
