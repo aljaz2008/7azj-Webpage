@@ -70,7 +70,7 @@ export const projects: ProjectItem[] = [
     slug: 'wae-rtty-intel',
     title: 'WAE RTTY Intel: a live band/beam/mult assistant for the WAE RTTY contest',
     summary:
-      'A Python dashboard that merges RBN, six DX clusters, N1MM Logger+ and Contest Online Scoreboard into "which band, which heading, which mult" advice. I built it the evening before WAE RTTY 2026 and used it live as S51A.',
+      'A Python dashboard that merges RBN, six DX clusters, N1MM Logger+ and Contest Online Scoreboard into "which band, which heading, which mult" advice. I built it in the week before WAE RTTY 2026 and used it live as S51A.',
     tags: ['Contesting', 'RTTY', 'Python'],
     image: {
       name: 'wae-intel-station-photo',
