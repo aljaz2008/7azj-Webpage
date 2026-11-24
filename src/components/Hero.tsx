@@ -27,11 +27,8 @@ export default function Hero() {
       <Waterfall />
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center pb-16 pt-32">
-        <p
-          style={rise(0)}
-          className="hero-rise flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-secondary"
-        >
-          Amateur radio · {LOCATION}
+        <p style={rise(0)} className="hero-rise label text-sm">
+          Amateur radio in {LOCATION}
         </p>
 
         <h1
@@ -77,9 +74,7 @@ export default function Hero() {
       >
         {facts.map((fact) => (
           <div key={fact.label} className="pr-4">
-            <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-secondary">
-              {fact.label}
-            </dt>
+            <dt className="label">{fact.label}</dt>
             <dd className="mt-1.5 text-primary">
               {fact.href ? (
                 <a

@@ -76,8 +76,6 @@ const stats = [
   }
 ];
 
-const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em] text-secondary';
-
 function StationList({ groups }: { groups: StationGroup[] }) {
   return (
     <dl className="mt-6">

@@ -181,5 +181,5 @@ export default function Waterfall() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} aria-hidden className="waterfall text-accent" />;
+  return <canvas ref={canvasRef} aria-hidden className="waterfall text-accent max-md:opacity-50" />;
 }
