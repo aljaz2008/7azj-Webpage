@@ -33,5 +33,119 @@
       1600
     ],
     "hash": "9fbdfeee3416b22fb3618202819c5b6b199469b3"
+  },
+  "wae-intel-architecture": {
+    "width": 2000,
+    "height": 1200,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "35b01490dcff5d6f4943267745a76331bb01c8ea"
+  },
+  "wae-intel-beam-heatmap": {
+    "width": 2000,
+    "height": 596,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "ba4444e2ce230f4daaaef020d298eb81bdb9b3ad"
+  },
+  "wae-intel-click-to-qsy": {
+    "width": 2000,
+    "height": 1389,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "66753ef383b81a6ff6c9a4a9d24d314882ab815c"
+  },
+  "wae-intel-mult-alerts": {
+    "width": 934,
+    "height": 1042,
+    "widths": [
+      480,
+      800,
+      934
+    ],
+    "hash": "b369c31ca96ecb5580880399008f07a8d579ce31"
+  },
+  "wae-intel-qtc-targets": {
+    "width": 934,
+    "height": 1042,
+    "widths": [
+      480,
+      800,
+      934
+    ],
+    "hash": "43305a44eeb791a6827a1cec5dc2e329443a3586"
+  },
+  "wae-intel-real-header": {
+    "width": 2000,
+    "height": 91,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "911c6ef154c65050c997d22c8e8618eb1dadedb2"
+  },
+  "wae-intel-real-standings": {
+    "width": 2000,
+    "height": 851,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "5d169cb3c0f45a266af5cd38dfc28d0482973ec0"
+  },
+  "wae-intel-real-stats": {
+    "width": 2000,
+    "height": 228,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      2000
+    ],
+    "hash": "cb41bf498abc044fe81bfff17576fbb0e3d31b03"
+  },
+  "wae-intel-station-photo": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      800,
+      1200,
+      1600,
+      1920
+    ],
+    "hash": "18e654c30786e047b8a4c6282fbefd07fd63a976"
+  },
+  "wae-intel-who-hears-me": {
+    "width": 936,
+    "height": 1042,
+    "widths": [
+      480,
+      800,
+      936
+    ],
+    "hash": "46d91120903aaddb9cc14efbdfc6ef2d1ea98796"
   }
 }

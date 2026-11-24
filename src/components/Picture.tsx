@@ -25,7 +25,6 @@ export default function Picture({ name, alt, sizes, className, lcp }: Props) {
   return (
     <picture>
       <source type="image/webp" srcSet={srcset('webp')} sizes={sizes} />
-      {/* eslint-disable-next-line @next/next/no-img-element -- static export: images are pre-sized at build */}
       <img
         src={`/img/${name}-${img.widths.at(-1)}.jpg`}
         srcSet={srcset('jpg')}

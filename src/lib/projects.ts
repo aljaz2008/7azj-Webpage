@@ -7,6 +7,7 @@ import FanVerticalArticle from '@/content/projects/fan-vertical.mdx';
 import HfAntennaSwitchArticle from '@/content/projects/hf-antenna-switch.mdx';
 import PcbQslDummyLoadArticle from '@/content/projects/pcb-qsl-dummy-load.mdx';
 import ShackCalendarArticle from '@/content/projects/shack-reservation-calendar.mdx';
+import WaeRttyIntelArticle from '@/content/projects/wae-rtty-intel.mdx';
 import FieldContestsArticle from '@/content/projects/ww-digi-field-day-2026.mdx';
 
 export type ProjectImage = {
@@ -64,6 +65,21 @@ export const projects: ProjectItem[] = [
     featured: true,
     writtenUp: true,
     Article: ContestLogAnalyzerArticle
+  },
+  {
+    slug: 'wae-rtty-intel',
+    title: 'WAE RTTY Intel: a live band/beam/mult assistant for the WAE RTTY contest',
+    summary:
+      'A Python dashboard that merges RBN, six DX clusters, N1MM Logger+ and Contest Online Scoreboard into "which band, which heading, which mult" advice. I built it the evening before WAE RTTY 2026 and used it live as S51A.',
+    tags: ['Contesting', 'RTTY', 'Python'],
+    image: {
+      name: 'wae-intel-station-photo',
+      alt: 'WAE RTTY Intel running on both monitors at S51A during WAE RTTY 2026',
+      kind: 'photo'
+    },
+    featured: false,
+    writtenUp: true,
+    Article: WaeRttyIntelArticle
   },
   {
     slug: 'esp32-ptt-matrix',

@@ -1,0 +1,185 @@
+On the Friday evening before the **WAE DX Contest RTTY 2026** I wanted my band, beam and multiplier decisions to come from live data instead of guesswork. So, starting around 22:00 local time on 13 November, about three hours before the start, I built **WAE RTTY Intel** together with Claude, an AI assistant. It's a Python program that runs next to **N1MM Logger+** on the S51A station PC, merges the **Reverse Beacon Network**, six DX clusters, N1MM and the live scoreboard, and turns all of it into one answer: which band, which heading, which multiplier. I kept fixing and extending it through the night while operating **S51A** as **S58Q**.
+
+## Why WAE RTTY needs this
+
+WAE is not a "work everyone, count countries" contest. The [rules](https://www.darc.de/der-club/referate/conteste/wae-dx-contest/en/) add several layers that change what a contact is worth:
+
+- **QTCs.** Besides QSOs you can exchange QTCs (reports of earlier QSOs), but only between different continents, and at most 10 per station pair. Every QTC counts like a QSO.
+- **Weighted band multipliers.** A multiplier on **80 m counts ×4**, on **40 m ×3**, and on **20/15/10 m ×2**.
+- **Call areas.** The call areas of W, VE, VK, ZL, ZS, JA, BY, PY and RA8/9/0 each count as separate multipliers.
+- **Everyone works everyone** in the RTTY leg, Europeans included.
+- **36 of 48 hours.** Single operators may operate 36 hours of the 48 (00:00 UTC Saturday to 23:59 UTC Sunday). Off-times must be at least 60 minutes with no QSO or QTC.
+
+So the value of a contact depends on the band, on the other station's continent and call area, and on how much QTC room is left with that station. On top of that, you have to decide when to take 12 hours of breaks. That's a lot to juggle in your head at 3 a.m.
+
+## How it works
+
+<Figure
+  name="wae-intel-architecture"
+  alt="Data-flow diagram: RBN, six DX clusters, N1MM Logger+, Contest Online Score and cty.dat feed an analysis engine, which drives a web dashboard; clicking a call sends a frequency change back to N1MM."
+  caption="Data flow. The program runs next to N1MM Logger+ on the station PC."
+  wide
+/>
+
+The program is written in **Python** with `asyncio` and `aiohttp`, kept compatible with **Python 3.8** because the station PC runs **Windows 7**. It serves a web dashboard on port 8073, so the same page also opens on a phone or tablet on the station LAN.
+
+### Data sources
+
+- **Reverse Beacon Network** over telnet: CW and RTTY skimmers.
+- **Six DX clusters:** S50CLX, S50DXS, OE9XFP, GB7DXG, VE7CC and W3LPL. The list came from DXLab's list of clusters that carry RBN spots.
+- **N1MM Logger+:** its UDP broadcasts (radio and contacts) and a read-only read of its `.s3db` log database.
+- **[Contest Online Scoreboard](https://contestonlinescore.com):** live standings, parsed from the HTML (WAE RTTY is `contest_id` 101).
+- **`cty.dat` from [country-files.com](https://www.country-files.com),** including the WAE-only entities such as \*IT9, \*GM/s, \*JW/b, \*TA1 and \*4U1V.
+- **Solar indices** (SFI, A, K).
+
+### Where to point
+
+The core of the dashboard is a band × 30° sector heatmap. Each cell scores a heading on a band from three kinds of evidence:
+
+- **H:** DX stations decoded by skimmers within about 1,200 km of me, which tells me what I can hear.
+- **P:** far skimmers decoding European stations, which tells me the path out of Europe is open.
+- **M:** skimmers decoding **my own call**. This counts double.
+
+From that it picks a best heading per band and ranks a "go here" line at the top. For propagation it also uses CW skimmer data, because there are many more CW skimmers than RTTY ones. Alerts and targets stay RTTY-only.
+
+<Figure
+  name="wae-intel-beam-heatmap"
+  alt="Where-to-point panel: ranked band and heading suggestions, a rose plot of the 20 m sectors, and a band by 30-degree sector heatmap."
+  caption="Demo with simulated feeds: spots, callsigns and numbers are test data, not contest activity."
+  wide
+/>
+
+### Can I actually hear it?
+
+The first version didn't have this, and it would happily have recommended daytime 80 m full of W stations that only US skimmers could hear. I asked it "is it weighted for realism?", and that question led to the fix. Now every spotted station gets a 0–1 score for "can I actually work it":
+
+- `here`: decoded by a skimmer near me.
+- `path`: the path out of Europe in that direction is open.
+- `short`: a close European station on 80 or 40 m.
+- `1-hop?`: possibly one hop.
+- `skip`: too close for 20, 15 or 10 m.
+- `far`: only heard by skimmers far away.
+
+### Real WAE scoring
+
+The program scores the way WAE does: **score = (QSOs + QTCs) × weighted multipliers**. A new multiplier on a band is worth *weight × points ÷ weighted multipliers* QSOs. Early in the contest that's about 12.5 QSOs for an 80 m multiplier and about 6 for one on 20 m. After 3 hours it projects my final score from my own rates.
+
+On top of that sit the panels I used during the contest:
+
+- **New-mult alerts,** sorted by value, with short- and long-path heading, whether it's day, grey line or night at the DX, and how many skimmers decode it. It only beeps for workable 80 and 40 m multipliers seen by at least two skimmers, to avoid chasing busted calls.
+- **Who hears me (RBN):** which skimmers decode my signal, on which band and heading, and how strongly.
+- **QTC targets:** non-European stations active right now that still have QTC room with me.
+- **Rivals:** pulled automatically from the scoreboard (the top 5 of my category plus the 3 stations above and below me).
+- **Projected score and standings,** with "how much to get ahead": the points needed, expressed as QSOs/QTCs or as new 80/40/20 m multipliers, and how many hours to catch up at current rates.
+- **Off-time tracker** for the 36-hour budget and the 60-minute rule.
+- **Computer and program statistics:** CPU, RAM, event-loop lag, spots per minute and the status of each feed.
+
+<Figure
+  name="wae-intel-mult-alerts"
+  alt="New mult alerts table listing band and weight, call, frequency, multiplier, continent, beam heading, sun at the DX and a realism tag."
+  caption="New-mult alerts. Demo with simulated feeds: spots, callsigns and numbers are test data, not contest activity."
+/>
+
+<Figure
+  name="wae-intel-who-hears-me"
+  alt="Who hears me table listing band, skimmer, continent, beam heading, distance, SNR and age of each RBN decode of my call."
+  caption="Who hears me. Demo with simulated feeds: spots, callsigns and numbers are test data, not contest activity."
+/>
+
+<Figure
+  name="wae-intel-qtc-targets"
+  alt="QTC targets table listing non-European stations calling CQ with band, frequency, continent, QTC room left, worked status, beam and age."
+  caption="QTC targets. Demo with simulated feeds: spots, callsigns and numbers are test data, not contest activity."
+/>
+
+### Click to QSY
+
+Clicking a call sends N1MM a `radio_setfrequency` UDP message on port 13064, the same mechanism N1MM's Waterfall Bandmap uses, and the radio jumps to the spot. It's blocked while I'm transmitting. An optional rotator turn (PstRotator or N1MM Rotor) is built in, but I didn't use it.
+
+<Figure
+  name="wae-intel-click-to-qsy"
+  alt="Dashboard with a call popup showing beam headings and QSY buttons, and a confirmation toast reading QSY to 3585.3 kHz."
+  caption="Click a call, check the popup, QSY. Demo with simulated feeds: spots, callsigns and numbers are test data, not contest activity."
+  wide
+/>
+
+## Building it in one evening
+
+The station PC set the constraints: it runs **Windows 7**, so the code had to stay **Python 3.8**-compatible. Before I trusted it with a real contest I tested it with simulated RBN and cluster feeds, a simulated N1MM database and simulated N1MM UDP packets. It processed about **150,000 spots in about 3 seconds** on Python 3.8.
+
+The build didn't end at the start of the contest: I kept fixing and extending the program during the night while operating, and several of the fixes below come from that.
+
+## How it went in the contest
+
+Around **02:00 UTC** on Saturday the scoreboard had S51A (S58Q) **39th** in SO-ALL HP DIGI with **6,726 points, 118 QSOs and 57 countries**. At about **02:59 UTC** the dashboard showed **172 QSOs**, **81 in the last hour** and about 3 hours of operating time used, with solar indices **SFI 119, A 4, K 0**. N1MM's score window showed **22,704 points** at that moment.
+
+I used the dashboard and propagation reasoning to plan the breaks: off around 04:15 UTC in the night lull, back for the morning grey line and the JA window on 20 m.
+
+{/* TODO: actual off-times (when, how long, how the 36 h were split) */}
+
+On **Sunday 15 November at 21:12 UTC**, about 2 h 47 min before the end, I took photos of the live dashboard.
+
+<Figure
+  name="wae-intel-real-header"
+  alt="Dashboard top bar at 21:12 UTC Sunday: 1,442 QSOs, rate 12 per hour, 24.88 hours used, multipliers per band, weighted 577, SFI 124."
+  caption="Re-rendered from a photo of the live dashboard (values exactly as on screen)."
+  wide
+/>
+
+- **Logged:** 1,442 QSOs, a rate of 12/h over 10 minutes and 26 in the last hour, with **24.88 h of the 36 h** operating time used. The radio was on 7029.2 kHz.
+- **Multipliers:** 10 m 26 · 15 m 50 · 20 m 49 · 40 m 53 · 80 m 42, which is **577 weighted**. SFI/A/K were 124/4/1.
+- **Scoreboard:** S51A at **943,328 points** with **1,438 QSOs** and **656 multipliers**, **30th** in the SO HP (DIGI) list the program filtered.
+- **Neighbours:** LC2N 29th (1,001,889), VE5MX 28th (1,025,592), NW3L 31st (795,564). The dashboard's advice for the next place up was: need **+58,562 points**, about **101 QSOs/QTCs or 18.1 new 80 m multipliers**, "at current rates you pass in ~1.9 h".
+
+<Figure
+  name="wae-intel-real-standings"
+  alt="Projected score and standings table with S51A in 30th place, and how-much-to-get-ahead cards for the stations above."
+  caption="Re-rendered from a photo of the live dashboard (values exactly as on screen). Rows 11–26 and the rank-1 row were off-screen in the photo, which is why the table jumps."
+  wide
+/>
+
+By then the program had run for **1,461.6 minutes (about 24.4 hours) without a restart** on the Windows 7 PC:
+
+- **Load:** 2.5 % of one core, 118.8 MB of RAM, event-loop lag at most 14 ms, about 52 ms on average to compute the dashboard.
+- **Throughput:** **2,030,115** telnet lines processed, **1,615,653** spots used, 587 spots per minute. The N1MM database read took 35 ms, the scoreboard page 8.7 s, and 5 dashboard clients were open.
+- **Feeds:** RBN delivered **1,597,677 spots** (141 MB). Then S50DXS 10,777, VE7CC 2,793, S50CLX 2,359, W3LPL 1,138 (with 69 reconnects) and GB7DXG 909. **OE9XFP never connected** (721 retries).
+
+<Figure
+  name="wae-intel-real-stats"
+  alt="Computer and program statistics after 1,461.6 minutes: CPU, RAM, event-loop lag, data pipeline counters and per-feed spot counts."
+  caption="Re-rendered from a photo of the live dashboard (values exactly as on screen)."
+  wide
+/>
+
+{/* TODO: final claimed score, QSOs, QTCs, multipliers and final placing */}
+
+{/* TODO: 2–3 sentences of my own impressions: what I looked at most, what was useful, what was noise */}
+
+## What didn't work
+
+**Lesson #1: never auto-detect what you can name.** The "auto" database finder picked the wrong N1MM `.s3db`, because the station PC has logs from many contests. I fixed it by pointing the program at `S51a_WAE_RTTY_2026.s3db` explicitly.
+
+**Lesson #2: test against the real page, not a mock-up.** The scoreboard lists me as "S51A (S58Q)". The first parser expected a bare callsign and silently ignored my row. I fixed it by parsing station and operator separately and adding call aliases.
+
+**Lesson #3: verify every input against real data before the contest.** The QTC counts were never picked up from N1MM's database. Early on Saturday N1MM showed 73 received QTCs on 40 m while the dashboard showed 0, and on Sunday evening it still said "QTC 0 · manual". So the QTC room and QTC points on the dashboard were all based on zero.
+
+The program's own score estimate was off too: **≈467,947** on Sunday evening, about half of the **943,328** on the scoreboard. It's tempting to blame the missing QTCs, but the numbers say otherwise. The scoreboard score is exactly 1,438 QSOs × 656 multipliers, with no QTC points in it at all. The estimate was 811 points × 577 weighted multipliers. So both the point count and the multiplier count disagreed with the scoreboard.
+
+{/* TODO: confirm why the estimate counted 811 points (vs 1,438 QSOs) and 577 weighted mults (vs 656 on the scoreboard) */}
+
+**Lesson #4: after changing the dashboard mid-contest, force the browser to load the new version.** I added click-to-QSY around 03:00 UTC, and the first click did nothing, because the browser still had the old page cached. A restart and Ctrl+F5 fixed it.
+
+{/* TODO: did click-to-QSY then work with the real radio? */}
+
+**Lesson #5: never mix two sources of truth for the same number.** The projected final score for S51A was **523,603**, lower than the **943,328** I already had. My own projection was built on the program's estimate, while the ranking used the scoreboard, so the two halves of the same table disagreed.
+
+## Takeaways
+
+- **Live data beats guessing, but only data I've verified.** The propagation side (heatmap, realism weighting, who hears me) ran for 24 hours on a Windows 7 PC at 2.5 % CPU. The scoring side needs to be checked against a real log before I rely on it.
+- **Next time:**
+  - Verify QTC reading against a real N1MM WAE database.
+  - Use the scoreboard (or one consistent formula) as the single source for score and projection.
+  - Find out why OE9XFP never connected.
+- **Reuse:** most of it (feeds, heatmap, realism weighting, click-to-QSY) isn't WAE-specific. Only the scoring and QTC logic are, so it can be adapted for other contests.
+
+{/* TODO: whether to publish the code, and where */}
