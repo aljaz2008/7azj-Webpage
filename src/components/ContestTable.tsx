@@ -1,9 +1,7 @@
-'use client';
-
-import { useMemo, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { dateRange, thousands } from '@/lib/format';
-import { isOwnCall, type ContestEntry, type ContestMode } from '@/lib/station';
+import ContestFilters from '@/components/ContestFilters';
+import { isOwnCall, type ContestEntry } from '@/lib/station';
 
 /** Unknown values: an en dash that says "pending" to hover and to screen readers. */
 function Pending() {
@@ -21,7 +19,11 @@ const cellLabel = 'label mr-2 md:hidden';
 
 function ContestRow({ entry }: { entry: ContestEntry }) {
   return (
-    <li className="grid grid-cols-2 gap-x-6 gap-y-3 border-b border-border py-6 md:grid-cols-[var(--contest-cols)] md:items-baseline">
+    <li
+      data-mode={entry.mode}
+      data-year={entry.start.slice(0, 4)}
+      className="grid grid-cols-2 gap-x-6 gap-y-3 border-b border-border py-6 md:grid-cols-[var(--contest-cols)] md:items-baseline"
+    >
       <p className="col-span-2 font-mono text-sm text-secondary md:col-span-1">
         {dateRange(entry.start, entry.end)}
       </p>
@@ -93,71 +95,13 @@ function ContestRow({ entry }: { entry: ContestEntry }) {
   );
 }
 
-const MODE_FILTERS: { label: string; modes: ContestMode[] | null }[] = [
-  { label: 'All modes', modes: null },
-  { label: 'SSB', modes: ['SSB'] },
-  { label: 'RTTY', modes: ['RTTY'] },
-  { label: 'Digital', modes: ['FT8/FT4'] },
-  { label: 'Mixed', modes: ['Mixed'] }
-];
-
-function FilterGroup({
-  name,
-  options,
-  value,
-  onChange
-}: {
-  name: string;
-  options: string[];
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div role="group" aria-label={name} className="flex flex-wrap gap-2">
-      {options.map((option) => (
-        <button
-          key={option}
-          type="button"
-          aria-pressed={value === option}
-          onClick={() => onChange(option)}
-          className="rounded-full border border-border px-3 py-1.5 text-sm text-secondary transition hover:border-secondary hover:text-primary aria-pressed:border-accent aria-pressed:bg-accent-soft aria-pressed:text-primary"
-        >
-          {option}
-        </button>
-      ))}
-    </div>
-  );
-}
-
 export default function ContestTable({ entries }: { entries: ContestEntry[] }) {
-  const years = useMemo(
-    () => ['All years', ...Array.from(new Set(entries.map((e) => e.start.slice(0, 4))))],
-    [entries]
-  );
-  const [mode, setMode] = useState(MODE_FILTERS[0].label);
-  const [year, setYear] = useState(years[0]);
-
-  const modes = MODE_FILTERS.find((f) => f.label === mode)?.modes ?? null;
-  const visible = entries.filter(
-    (e) => (!modes || modes.includes(e.mode)) && (year === years[0] || e.start.startsWith(year))
-  );
-
   return (
     <div>
-      <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex flex-col gap-3">
-          <FilterGroup
-            name="Filter by mode"
-            options={MODE_FILTERS.map((f) => f.label)}
-            value={mode}
-            onChange={setMode}
-          />
-          <FilterGroup name="Filter by year" options={years} value={year} onChange={setYear} />
-        </div>
-        <p aria-live="polite" className="label">
-          {visible.length} of {entries.length} entries
-        </p>
-      </div>
+      <ContestFilters
+        listId="contest-rows"
+        rows={entries.map((e) => ({ mode: e.mode, year: e.start.slice(0, 4) }))}
+      />
       <div
         aria-hidden
         className="label hidden gap-6 border-b border-border pb-3 md:grid md:grid-cols-[var(--contest-cols)]"
@@ -168,14 +112,11 @@ export default function ContestTable({ entries }: { entries: ContestEntry[] }) {
         <span className="text-right">QSOs</span>
         <span className="text-right">Score</span>
       </div>
-      <ol>
-        {visible.map((entry) => (
+      <ol id="contest-rows">
+        {entries.map((entry) => (
           <ContestRow key={`${entry.name}-${entry.start}`} entry={entry} />
         ))}
       </ol>
-      {visible.length === 0 ? (
-        <p className="py-10 text-secondary">No entries match. Pick another mode or year.</p>
-      ) : null}
     </div>
   );
 }

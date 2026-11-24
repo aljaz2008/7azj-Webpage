@@ -145,7 +145,7 @@ export default function Waterfall() {
       ctx.putImageData(image, 0, 0);
     };
     const sync = () => {
-      const run = visible && !document.hidden && !reduceMotion.matches;
+      const run = ready && visible && !document.hidden && !reduceMotion.matches;
       if (run && !timer) timer = window.setInterval(tick, ROW_MS);
       if (!run && timer) {
         window.clearInterval(timer);
@@ -153,7 +153,17 @@ export default function Waterfall() {
       }
     };
 
-    setup();
+    // First paint of the waterfall waits for idle time so it never competes with hydration
+    let ready = false;
+    const start = () => {
+      setup();
+      ready = true;
+      sync();
+    };
+    const idle = 'requestIdleCallback' in window;
+    const idleId = idle
+      ? window.requestIdleCallback(start, { timeout: 1500 })
+      : window.setTimeout(start, 200);
 
     const io = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -164,7 +174,7 @@ export default function Waterfall() {
     let resizeTimer = 0;
     const onResize = () => {
       window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(setup, 200);
+      resizeTimer = window.setTimeout(() => ready && setup(), 200);
     };
     window.addEventListener('resize', onResize);
     document.addEventListener('visibilitychange', sync);
@@ -172,6 +182,8 @@ export default function Waterfall() {
     sync();
 
     return () => {
+      if (idle) window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
       io.disconnect();
       window.clearInterval(timer);
       window.clearTimeout(resizeTimer);

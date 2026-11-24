@@ -80,6 +80,13 @@ body {
   mask-composite: intersect;
 }
 
+/* Controls that only work with JavaScript (e.g. contest filters) */
+@media (scripting: none) {
+  .js-only {
+    display: none;
+  }
+}
+
 /* Section reveal: hidden only when JS can show it again and motion is allowed */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   [data-reveal] {
