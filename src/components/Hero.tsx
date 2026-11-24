@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
-import { ArrowDown, ArrowRight } from 'lucide-react';
-import ParticleBackground from '@/components/ParticleBackground';
+import { ArrowRight } from 'lucide-react';
+import Waterfall from '@/components/Waterfall';
 import {
   CALLSIGN,
   CALLSIGN_CHANGED,
@@ -23,14 +23,13 @@ const rise = (delay: number) => ({ '--rise-delay': `${delay}s` }) as CSSProperti
 export default function Hero() {
   return (
     <section id="hero" className="relative flex min-h-[100svh] flex-col px-6 md:px-10">
-      <ParticleBackground />
+      <Waterfall />
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center pb-16 pt-32">
         <p
           style={rise(0)}
           className="hero-rise flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-secondary"
         >
-          <span className="animate-blink h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--color-signal)]" />
           Amateur radio · {LOCATION}
         </p>
 
@@ -84,14 +83,6 @@ export default function Hero() {
           </div>
         ))}
       </dl>
-
-      <a
-        href="#about"
-        aria-label="Scroll to About"
-        className="absolute bottom-10 right-6 hidden text-secondary transition hover:text-accent md:right-10 md:block"
-      >
-        <ArrowDown size={18} className="motion-safe:animate-bounce" />
-      </a>
     </section>
   );
 }
