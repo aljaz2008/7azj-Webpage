@@ -64,7 +64,7 @@ export default async function ProjectPage({ params }: Props) {
           {project.image ? (
             <ProjectMedia
               image={project.image}
-              priority
+              lcp
               sizes="(min-width: 768px) 768px, 100vw"
               className="mt-12"
             />

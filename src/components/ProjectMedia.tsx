@@ -6,7 +6,8 @@ type Props = {
   /** Empty alt when the image only decorates a link that already has text */
   decorative?: boolean;
   sizes: string;
-  priority?: boolean;
+  /** The page's LCP image: fetched at high priority, never lazy */
+  lcp?: boolean;
   className?: string;
 };
 
@@ -15,13 +16,7 @@ type Props = {
  * top-left (so titles aren't cropped) and dimmed slightly so a light UI doesn't glare
  * against the dark page.
  */
-export default function ProjectMedia({
-  image,
-  decorative,
-  sizes,
-  priority,
-  className = ''
-}: Props) {
+export default function ProjectMedia({ image, decorative, sizes, lcp, className = '' }: Props) {
   const alt = decorative ? '' : image.alt;
 
   if (image.kind === 'screenshot') {
@@ -38,7 +33,8 @@ export default function ProjectMedia({
             alt={alt}
             fill
             sizes={sizes}
-            priority={priority}
+            fetchPriority={lcp ? 'high' : undefined}
+            loading={lcp ? 'eager' : undefined}
             className="object-cover object-left-top brightness-80"
           />
         </div>
@@ -53,7 +49,8 @@ export default function ProjectMedia({
         alt={alt}
         fill
         sizes={sizes}
-        priority={priority}
+        fetchPriority={lcp ? 'high' : undefined}
+        loading={lcp ? 'eager' : undefined}
         className="object-cover"
       />
       <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
