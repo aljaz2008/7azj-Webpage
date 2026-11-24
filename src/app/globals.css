@@ -20,6 +20,16 @@
 
 :root {
   color-scheme: dark;
+  /* contest table: date | contest | call | QSOs | score */
+  --contest-cols: 8.5rem minmax(0, 1fr) 7rem 4.5rem 8.5rem;
+}
+
+/* Small data label: mono, sentence case, 12px */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  color: var(--color-secondary);
 }
 
 * {

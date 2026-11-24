@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 import { DiscordIcon, LinkedinIcon } from '@/components/BrandIcons';
 import Globe from '@/components/GlobeLazy';
+import ContestTable from '@/components/ContestTable';
 import Hero from '@/components/Hero';
 import Navbar from '@/components/Navbar';
 import ProjectsList from '@/components/ProjectsList';
@@ -17,9 +18,9 @@ import {
   LOCATOR,
   OWNER_NAME,
   contestData,
-  contestStats,
-  isOwnCall
+  contestStats
 } from '@/lib/station';
+import { compact, thousands } from '@/lib/format';
 
 const interests = [
   'Contest operating',
@@ -74,23 +75,18 @@ const socials = [
   }
 ];
 
-const monthYear = (iso: string) =>
-  new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'UTC'
-  });
-
-const formatScore = (n: number) =>
-  n >= 1_000_000 ? `${(n / 1_000_000).toFixed(2)}M` : n.toLocaleString('en-US');
+const best = contestStats.bestFinal;
 
 const stats = [
   { value: String(contestStats.contests), label: 'Contest entries' },
   {
-    value: `${contestStats.qsos.toLocaleString('en-US')}${contestStats.qsosPartial ? '+' : ''}`,
-    label: 'QSOs logged'
+    value: `${thousands(contestStats.qsos)}${contestStats.qsosPartial ? '+' : ''}`,
+    label: 'QSOs in published results'
   },
-  { value: formatScore(contestStats.bestScore), label: 'Best claimed score' }
+  {
+    value: best?.score ? compact(best.score) : '–',
+    label: best ? `Best final score, ${best.name} ${best.start.slice(0, 4)}, ${best.category}` : 'Best final score'
+  }
 ];
 
 const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em] text-secondary';
@@ -185,64 +181,9 @@ export default function HomePage() {
             </dl>
           </Reveal>
 
-          <Reveal>
-            <div className="mt-12">
-              <div
-                aria-hidden
-                className={`${eyebrow} hidden grid-cols-[90px_minmax(0,1fr)_120px_80px_70px_100px] gap-6 border-b border-border pb-3 md:grid`}
-              >
-                <span>Date</span>
-                <span>Contest</span>
-                <span>Call</span>
-                <span>Class</span>
-                <span className="text-right">QSOs</span>
-                <span className="text-right">Score</span>
-              </div>
-
-              <ol>
-                {contestData.map((entry) => (
-                  <li
-                    key={`${entry.name}-${entry.start}`}
-                    className="grid grid-cols-2 gap-x-6 gap-y-3 border-b border-border py-6 transition-colors hover:bg-white/[0.015] md:grid-cols-[90px_minmax(0,1fr)_120px_80px_70px_100px] md:items-baseline"
-                  >
-                    <p className="col-span-2 font-mono text-sm text-secondary md:col-span-1">
-                      {monthYear(entry.start)}
-                    </p>
-
-                    <div className="col-span-2 md:col-span-1">
-                      <h3 className="font-heading text-xl font-semibold text-primary">{entry.name}</h3>
-                      <p className="mt-1 text-sm text-secondary">{entry.club}</p>
-                      <p className="mt-3 font-mono text-xs leading-relaxed text-secondary">
-                        {entry.ops.map((op, i) => (
-                          <span key={op}>
-                            {i > 0 ? ', ' : ''}
-                            <span className={isOwnCall(op) ? 'text-accent' : undefined}>{op}</span>
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-
-                    <p className="font-mono text-sm text-primary">
-                      <span className={`${eyebrow} mr-2 md:hidden`}>Call</span>
-                      {entry.callsign}
-                    </p>
-                    <p className="font-mono text-sm text-secondary">
-                      <span className={`${eyebrow} mr-2 md:hidden`}>Class</span>
-                      {entry.category}
-                    </p>
-                    <p className="font-mono text-sm text-primary md:text-right">
-                      <span className={`${eyebrow} mr-2 md:hidden`}>QSOs</span>
-                      {entry.qsos}
-                    </p>
-                    <p className="font-mono text-sm text-primary md:text-right">
-                      <span className={`${eyebrow} mr-2 md:hidden`}>Score</span>
-                      {entry.score}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </Reveal>
+          <div className="mt-12">
+            <ContestTable entries={contestData} />
+          </div>
 
           <div className="relative mt-16">
             <Globe />
