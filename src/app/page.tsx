@@ -18,7 +18,10 @@ import {
   LOCATOR,
   OWNER_NAME,
   contestData,
-  contestStats
+  contestStats,
+  contestStation,
+  homeStation,
+  type StationGroup
 } from '@/lib/station';
 import { compact, thousands } from '@/lib/format';
 
@@ -45,23 +48,6 @@ const studies = [
   }
 ];
 
-const station = [
-  { title: 'Transceiver', items: ['Kenwood TS-590SG'] },
-  { title: 'Amplifiers', items: ['OM Power OM2000+', 'OM Power OM2000A+'] },
-  { title: 'Towers', items: ['22 m main tower', '22 m secondary tower'] },
-  {
-    title: 'Antennas',
-    items: [
-      '2× Optibeam 16/3',
-      '7 MHz Moxon',
-      'Rotary dipole',
-      '80 m dipole',
-      '160 m dipole',
-      'K9AY receive antenna'
-    ]
-  }
-];
-
 const socials = [
   {
     label: 'LinkedIn',
@@ -85,11 +71,40 @@ const stats = [
   },
   {
     value: best?.score ? compact(best.score) : '–',
-    label: best ? `Best final score, ${best.name} ${best.start.slice(0, 4)}, ${best.category}` : 'Best final score'
+    label: best
+      ? `Best final score, ${best.name} ${best.start.slice(0, 4)}, ${best.category}`
+      : 'Best final score'
   }
 ];
 
 const eyebrow = 'font-mono text-[11px] uppercase tracking-[0.2em] text-secondary';
+
+function StationList({ groups }: { groups: StationGroup[] }) {
+  return (
+    <dl className="mt-6">
+      {groups.map((group) => (
+        <div
+          key={group.title}
+          className="grid grid-cols-[5.5rem_1fr] gap-4 border-b sm:grid-cols-[7.5rem_1fr] sm:gap-6 border-border py-5 first:border-t"
+        >
+          <dt className="label pt-1">{group.title}</dt>
+          <dd className="space-y-1 text-primary">
+            {group.items.map((item) => (
+              <p key={item.text}>
+                {item.text}
+                {item.status ? (
+                  <span className="ml-2 rounded border border-border px-1.5 py-px text-xs text-secondary">
+                    {item.status}
+                  </span>
+                ) : null}
+              </p>
+            ))}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export default function HomePage() {
   return (
@@ -107,9 +122,9 @@ export default function HomePage() {
                 <span className="text-accent">{CALLSIGN}</span>.
               </p>
               <p>
-                I received my licence in February 2024 as {FORMER_CALLSIGN} and have spent every spare
-                moment since exploring radio technology, antennas, RF engineering and contesting. In{' '}
-                {CALLSIGN_CHANGED} I changed my callsign to {CALLSIGN}.
+                I received my licence in February 2024 as {FORMER_CALLSIGN} and have spent every
+                spare moment since exploring radio technology, antennas, RF engineering and
+                contesting. In {CALLSIGN_CHANGED} I changed my callsign to {CALLSIGN}.
               </p>
               <p>
                 What I enjoy most is where the disciplines meet: building the antenna, writing the
@@ -119,7 +134,11 @@ export default function HomePage() {
               <p className="flex flex-wrap gap-x-3 gap-y-1 pt-2 text-base text-primary">
                 {interests.map((item, i) => (
                   <span key={item} className="flex items-center gap-3">
-                    {i > 0 ? <span aria-hidden className="text-accent">/</span> : null}
+                    {i > 0 ? (
+                      <span aria-hidden className="text-accent">
+                        /
+                      </span>
+                    ) : null}
                     {item}
                   </span>
                 ))}
@@ -149,7 +168,9 @@ export default function HomePage() {
             {studies.map((item, i) => (
               <Reveal key={item.title} delay={i * 0.08} className="border-t border-border pt-6">
                 <p className="font-mono text-xs text-accent">0{i + 1}</p>
-                <h3 className="mt-3 font-heading text-xl font-semibold text-primary">{item.title}</h3>
+                <h3 className="mt-3 font-heading text-xl font-semibold text-primary">
+                  {item.title}
+                </h3>
                 <p className="mt-2 text-sm leading-relaxed text-secondary">{item.text}</p>
               </Reveal>
             ))}
@@ -164,7 +185,8 @@ export default function HomePage() {
           intro={
             <>
               Recent contest entries, newest first. Results before {CALLSIGN_CHANGED} list me under
-              my previous callsign, <span className="font-mono text-primary">{FORMER_CALLSIGN}</span>.
+              my previous callsign,{' '}
+              <span className="font-mono text-primary">{FORMER_CALLSIGN}</span>.
             </>
           }
         >
@@ -186,10 +208,12 @@ export default function HomePage() {
           </div>
 
           <div className="mt-20 border-t border-border pt-16">
-            <h3 className="font-heading text-2xl font-semibold text-primary">Where the signals went</h3>
+            <h3 className="font-heading text-2xl font-semibold text-primary">
+              Where the signals went
+            </h3>
             <p className="mt-3 max-w-2xl text-secondary">
-              The countries and grid squares in my log, plotted the way a beam heading sees
-              the world: great-circle distance and bearing from {LOCATOR}.
+              The countries and grid squares in my log, plotted the way a beam heading sees the
+              world: great-circle distance and bearing from {LOCATOR}.
             </p>
             <div className="mt-10">
               <WorkedMap />
@@ -197,47 +221,48 @@ export default function HomePage() {
           </div>
         </Section>
 
-        <Section id="setup" index={4} label="Station" title="The station.">
-          <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr]">
+        <Section
+          id="setup"
+          index={4}
+          label="Station"
+          title="Two stations."
+          intro={
+            <>
+              I operate {CALLSIGN} from home in {LOCATION.split(',')[0]}, and contest as part of the
+              team at S51A, the Slovenia Contest Club station.
+            </>
+          }
+        >
+          <div className="grid gap-16 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
             <Reveal>
-              <dl>
-                {station.map((group) => (
-                  <div
-                    key={group.title}
-                    className="grid grid-cols-[120px_1fr] gap-6 border-b border-border py-5 first:border-t"
-                  >
-                    <dt className={`${eyebrow} pt-1`}>{group.title}</dt>
-                    <dd className="space-y-1 text-primary">
-                      {group.items.map((item) => (
-                        <p key={item}>{item}</p>
-                      ))}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
+              <h3 className="font-heading text-2xl font-semibold text-primary">
+                Home station ({CALLSIGN})
+              </h3>
+              <StationList groups={homeStation} />
             </Reveal>
 
             <Reveal delay={0.1}>
-              <figure>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                  <Image
-                    src="/images/shack.jpg"
-                    alt={`The ${CALLSIGN} radio shack with transceivers, amplifiers and monitors`}
-                    fill
-                    sizes="(min-width: 1024px) 45vw, 100vw"
-                    className="object-cover"
-                  />
-                  <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
-                </div>
-                <figcaption className="mt-4 flex justify-between font-mono text-xs text-secondary">
-                  <span>The shack</span>
-                  <span>
-                    {CALLSIGN} · {LOCATOR}
-                  </span>
-                </figcaption>
-              </figure>
+              <h3 className="font-heading text-2xl font-semibold text-primary">
+                Contest station (S51A)
+              </h3>
+              <StationList groups={contestStation} />
             </Reveal>
           </div>
+          <Reveal className="mt-16">
+            <figure>
+              <div className="relative aspect-[3/2] overflow-hidden rounded-lg">
+                <Image
+                  src="/images/shack.jpg"
+                  alt="The S51A operating room: radios, keyboards and a row of monitors"
+                  fill
+                  sizes="(min-width: 1280px) 890px, (min-width: 1024px) 70vw, 100vw"
+                  className="object-cover"
+                />
+                <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
+              </div>
+              <figcaption className="label mt-4">S51A contest station</figcaption>
+            </figure>
+          </Reveal>
         </Section>
 
         <Section
@@ -277,7 +302,10 @@ export default function HomePage() {
                 >
                   {link.icon}
                   {link.label}
-                  <ArrowUpRight size={14} className="text-secondary transition group-hover:text-accent" />
+                  <ArrowUpRight
+                    size={14}
+                    className="text-secondary transition group-hover:text-accent"
+                  />
                 </a>
               ))}
               <p className="text-secondary">

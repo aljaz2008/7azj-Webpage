@@ -10,6 +10,40 @@ export const EMAIL = 's57azj@s57azj.eu';
 export const SITE_URL = 'https://s57azj.eu';
 export const QRZ_URL = `https://www.qrz.com/db/${CALLSIGN}`;
 
+export type StationGroup = { title: string; items: { text: string; status?: string }[] };
+
+export const homeStation: StationGroup[] = [
+  { title: 'HF', items: [{ text: 'Yaesu FTDX10' }, { text: 'QRP Labs QMX+' }] },
+  { title: 'VHF/UHF', items: [{ text: 'Yaesu FTM-300D' }] },
+  {
+    title: 'Antenna',
+    items: [
+      {
+        text: 'Multiband fan vertical for 40/20/15/10 m on a Spiderbeam 10 m mast',
+        status: 'in progress'
+      }
+    ]
+  }
+];
+
+/** S51A, the Slovenia Contest Club station (not mine; I operate there with the team). */
+export const contestStation: StationGroup[] = [
+  { title: 'Transceiver', items: [{ text: 'Kenwood TS-590SG' }] },
+  { title: 'Amplifiers', items: [{ text: 'OM Power OM2000+' }, { text: 'OM Power OM2000A+' }] },
+  { title: 'Towers', items: [{ text: '22 m main tower' }, { text: '22 m secondary tower' }] },
+  {
+    title: 'Antennas',
+    items: [
+      { text: '2× Optibeam 16/3' },
+      { text: '7 MHz Moxon' },
+      { text: 'Rotary dipole' },
+      { text: '80 m dipole' },
+      { text: '160 m dipole' },
+      { text: 'K9AY receive antenna' }
+    ]
+  }
+];
+
 export type ContestMode = 'SSB' | 'RTTY' | 'FT8/FT4' | 'Mixed';
 
 export type ContestEntry = {
@@ -48,7 +82,10 @@ const SRC = {
   wwDigi: { label: 'ww-digi.com', url: 'https://ww-digi.com/' },
   yota: { label: 'contest.ham-yota.com', url: 'https://contest.ham-yota.com/results' },
   bartg: { label: 'bartg.rsgbcc.org', url: 'https://bartg.rsgbcc.org/' },
-  wae: { label: 'DARC WAE results', url: 'https://www.darc.de/der-club/referate/conteste/wae-dx-contest/' },
+  wae: {
+    label: 'DARC WAE results',
+    url: 'https://www.darc.de/der-club/referate/conteste/wae-dx-contest/'
+  },
   fieldDay: {
     label: 'DARC Field Day results',
     url: 'https://www.darc.de/der-club/referate/conteste/iaru-region-1-fieldday/'
