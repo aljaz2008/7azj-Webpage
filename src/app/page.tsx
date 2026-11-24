@@ -334,6 +334,19 @@ export default function HomePage() {
                 {LOCATION} · {LOCATOR}
               </p>
             </div>
+
+            <p className="max-w-2xl text-secondary">
+              I also founded{' '}
+              <a
+                href="https://qrp-solutions.eu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline decoration-border underline-offset-4 transition hover:text-accent hover:decoration-accent"
+              >
+                QRP-SOLUTIONS
+              </a>
+              , which makes accessories for QRP radios.
+            </p>
           </Reveal>
         </Section>
       </main>
