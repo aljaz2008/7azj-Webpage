@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/copy-standalone.mjs",
-    "start": "node .next/standalone/server.js",
+    "build": "next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "map:data": "node scripts/build-map-data.mjs",
     "prebuild": "node scripts/build-images.mjs",
-    "images": "node scripts/build-images.mjs"
+    "images": "node scripts/build-images.mjs",
+    "preview": "node scripts/serve-out.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
