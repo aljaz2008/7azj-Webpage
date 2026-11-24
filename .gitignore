@@ -5,3 +5,9 @@ out
 npm-debug.log*
 .env*
 *.tsbuildinfo
+
+# Raw station logs contain other operators' callsigns; only data/worked.json is committed
+data/logs/*.adi
+data/logs/*.adif
+data/logs/*.log
+data/logs/*.cbr
