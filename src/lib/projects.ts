@@ -73,8 +73,8 @@ export const projects: ProjectItem[] = [
       'A Python dashboard that merges RBN, six DX clusters, N1MM Logger+ and Contest Online Scoreboard into "which band, which heading, which mult" advice. I built it in the week before WAE RTTY 2026 and used it live as S51A.',
     tags: ['Contesting', 'RTTY', 'Python'],
     image: {
-      name: 'wae-intel-station-photo',
-      alt: 'WAE RTTY Intel running on both monitors at S51A during WAE RTTY 2026',
+      name: 'wae-intel-architecture',
+      alt: 'WAE RTTY Intel data flow: RBN, six DX clusters, N1MM Logger+, Contest Online Score and cty.dat feed an analysis engine that drives a web dashboard; clicking a call sends a frequency change back to N1MM.',
       kind: 'photo'
     },
     featured: true,

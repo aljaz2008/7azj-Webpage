@@ -14,14 +14,7 @@ So the value of a contact depends on the band, on the other station's continent 
 
 ## How it works
 
-<Figure
-  name="wae-intel-architecture"
-  alt="Data-flow diagram: RBN, six DX clusters, N1MM Logger+, Contest Online Score and cty.dat feed an analysis engine, which drives a web dashboard; clicking a call sends a frequency change back to N1MM."
-  caption="Data flow. The program runs next to N1MM Logger+ on the station PC."
-  wide
-/>
-
-The program is written in **Python** with `asyncio` and `aiohttp`, kept compatible with **Python 3.8** because the station PC runs **Windows 7**. It serves a web dashboard on port 8073, so the same page also opens on a phone or tablet on the station LAN.
+The program is written in **Python** with `asyncio` and `aiohttp`, kept compatible with **Python 3.8** because the station PC runs **Windows 7**. It serves a web dashboard on port 8073, so the same page also opens on a phone or tablet on the station LAN. The diagram at the top of this page shows how the data flows.
 
 ### Data sources
 
@@ -116,6 +109,12 @@ Around **02:00 UTC** on Saturday the scoreboard had S51A (S58Q) **39th** in SO-A
 I used the dashboard and propagation reasoning to plan the breaks: off around 04:15 UTC in the night lull, back for the morning grey line and the JA window on 20 m.
 
 {/* TODO: actual off-times (when, how long, how the 36 h were split) */}
+
+<Figure
+  name="wae-intel-station-photo"
+  alt="WAE RTTY Intel running on both monitors at S51A during WAE RTTY 2026"
+  caption="WAE RTTY Intel on both monitors at S51A on Sunday afternoon (still from my video)."
+/>
 
 On **Sunday 15 November at 21:12 UTC**, about 2 h 47 min before the end, I took photos of the live dashboard.
 
