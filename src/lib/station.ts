@@ -5,9 +5,9 @@ export const CALLSIGN_CHANGED = 'October 2026';
 export const OWNER_NAME = 'Aljaž Žugič Jehart';
 export const LOCATOR = 'JN76GB';
 export const LOCATION = 'Ljubljana, Slovenia';
-/** Contact address. The domain stays s57azj.eu after the callsign change. */
-export const EMAIL = 's57azj@s57azj.eu';
-export const SITE_URL = 'https://s57azj.eu';
+/** Canonical origin. Moved from s57azj.eu with the callsign change (October 2026). */
+export const SITE_URL = 'https://s58q.eu';
+export const EMAIL = 's58q@s58q.eu';
 export const QRZ_URL = `https://www.qrz.com/db/${CALLSIGN}`;
 export const LINKEDIN_URL = 'https://linkedin.com/in/aljaž-žugič-jehart-9a5a66239';
 
