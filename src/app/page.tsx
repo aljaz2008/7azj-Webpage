@@ -81,7 +81,7 @@ const stats = [
   { value: String(contestStats.contests), label: 'Contest entries' },
   {
     value: `${thousands(contestStats.qsos)}${contestStats.qsosPartial ? '+' : ''}`,
-    label: 'QSOs in published results'
+    label: 'QSOs across these entries'
   },
   {
     value: best?.score ? compact(best.score) : '–',
@@ -169,11 +169,11 @@ export default function HomePage() {
           }
         >
           <Reveal>
-            <dl className="grid grid-cols-3 gap-6 border-y border-border py-8">
+            <dl className="grid gap-x-6 gap-y-6 border-y border-border py-8 sm:grid-cols-3">
               {stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col-reverse">
-                  <dt className="mt-2 text-xs text-secondary md:text-sm">{stat.label}</dt>
-                  <dd className="font-heading text-3xl font-bold tracking-tight text-primary md:text-5xl">
+                  <dt className="mt-2 max-w-[24ch] text-sm text-secondary">{stat.label}</dt>
+                  <dd className="font-heading text-4xl font-bold tracking-tight text-primary tabular-nums lg:text-5xl">
                     {stat.value}
                   </dd>
                 </div>
