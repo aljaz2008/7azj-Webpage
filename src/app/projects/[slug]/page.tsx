@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Navbar from '@/components/Navbar';
+import ProjectMedia from '@/components/ProjectMedia';
 import SiteFooter from '@/components/SiteFooter';
 import { getProject, projects } from '@/lib/projects';
 import { CALLSIGN } from '@/lib/station';
@@ -62,17 +62,12 @@ export default async function ProjectPage({ params }: Props) {
           </p>
 
           {project.image ? (
-            <div className="relative mt-12 aspect-[16/10] overflow-hidden rounded-lg">
-              <Image
-                src={project.image.src}
-                alt={project.image.alt}
-                fill
-                priority
-                sizes="(min-width: 768px) 768px, 100vw"
-                className="object-cover object-top"
-              />
-              <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
-            </div>
+            <ProjectMedia
+              image={project.image}
+              priority
+              sizes="(min-width: 768px) 768px, 100vw"
+              className="mt-12"
+            />
           ) : null}
 
           <div className="mdx-content mt-12 space-y-5 text-secondary">

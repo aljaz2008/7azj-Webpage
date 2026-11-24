@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
+import ProjectMedia from '@/components/ProjectMedia';
 import Reveal from '@/components/Reveal';
 import { featuredProjects, otherProjects } from '@/lib/projects';
 
@@ -16,16 +16,13 @@ export default function ProjectsList() {
                 href={`/projects/${project.slug}`}
                 tabIndex={-1}
                 aria-hidden
-                className={`relative block aspect-[16/10] overflow-hidden rounded-lg ${i % 2 ? 'md:order-2' : ''}`}
+                className={`block ${i % 2 ? 'md:order-2' : ''}`}
               >
-                <Image
-                  src={project.image!.src}
-                  alt=""
-                  fill
+                <ProjectMedia
+                  image={project.image!}
+                  decorative
                   sizes="(min-width: 768px) 40vw, 100vw"
-                  className="object-cover object-top"
                 />
-                <span className="absolute inset-0 rounded-lg ring-1 ring-inset ring-white/10" />
               </Link>
 
               <div>
